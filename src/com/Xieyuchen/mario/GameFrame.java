@@ -65,17 +65,17 @@ public class GameFrame extends JFrame{
             for (int j = 0; j < map[0].length; j++) {
                 //读取到的是1，画砖头
                 if(map[i][j]==1){
-                    brick = new Brick(j * 16,i * 16, 16, 16, new ImageIcon("src/images/brick.png").getImage());
+                    brick = new Brick(j * 16,i * 16, new ImageIcon("src/images/brick.png").getImage());
                     eneryList.add(brick);
                 }
                 //读到2画金币
                 if(map[i][j]==2){
-                    coin = new Coin(j * 16,i * 16, 16, 16, new ImageIcon("src/images/coin.png").getImage());
+                    coin = new Coin(j * 16,i * 16,  new ImageIcon("src/images/coin.png").getImage());
                     eneryList.add(coin);
                 }
                 //读到3画水管
                 if(map[i][j]==3){
-                    pipe = new Pipe(j*30,i*30, pipe.width, pipe.height, new ImageIcon("image/pipe.png").getImage());
+                    pipe = new Pipe(j*16,i*16, new ImageIcon("src/images/pipe_tou.png").getImage());
                     eneryList.add(pipe);
                 }
 

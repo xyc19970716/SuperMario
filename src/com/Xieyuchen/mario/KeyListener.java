@@ -55,10 +55,12 @@ public class KeyListener extends KeyAdapter{
             //向右走
             case KeyEvent.VK_RIGHT:
                 gf.mario.right = false;
+                //gf.mario.img=new ImageIcon("src/images/mario_right.png").getImage();
                 break;
             //向左走
             case KeyEvent.VK_LEFT:
                 gf.mario.left = false;
+                //gf.mario.img=new ImageIcon("src/images/mario_left.png").getImage();
                 break;
 
 

@@ -1,7 +1,8 @@
 package com.Xieyuchen.mario;
 
-import java.awt.Image;
-import java.awt.Rectangle;
+import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
 
@@ -24,6 +25,10 @@ public class Mario extends Thread{
     public  int width = img.getWidth(null),height = img.getHeight(null);
 
 
+
+    public int actionTime = 0;
+    public boolean actionLeft,actionRight, actionUp,actionDown;
+
     public boolean left=false,right=false,down=false,up=false;
 
     public String Dir_Up="Up",Dir_Left="Left",Dir_Right="Right",Dir_Down="Down";
@@ -34,6 +39,54 @@ public class Mario extends Thread{
         this.Gravity();
     }
 
+    public void Action() {
+        if (right) {
+            this.img = new ImageIcon("src/images/mario_right" + actionTime % 3 + ".png").getImage();
+            actionTime++;
+            actionRight = true;
+        }
+        if (left) {
+            this.img =  new ImageIcon("src/images/mario_left" + actionTime % 3 + ".png").getImage();
+            actionTime++;
+            actionLeft = true;
+        }
+        if (up && actionRight) {
+            this.img= new ImageIcon("src/images/mario_jump_right.png").getImage();
+            actionUp = true;
+            actionRight = false;
+        }
+        if (up && actionLeft) {
+            this.img= new ImageIcon("src/images/mario_jump_left.png").getImage();
+            actionUp = true;
+            actionLeft = false;
+        }
+        if (!up && !right && !left) {
+            if (actionLeft) {
+                this.img= new ImageIcon("src/images/mario_left.png").getImage();
+                actionLeft = false;
+            }
+            if (actionRight) {
+                this.img = new ImageIcon("src/images/mario_right.png").getImage();
+                actionRight = false;
+            }
+        }
+        if (up) {
+            if (actionLeft) {
+                this.img= new ImageIcon("src/images/mario_left.png").getImage();
+                actionLeft = false;
+            }
+            if (actionRight) {
+                this.img = new ImageIcon("src/images/mario_right.png").getImage();
+                actionRight = false;
+            }
+        }
+
+
+
+
+
+    }
+
     public void run(){
         while(true){
             //向左走
@@ -41,12 +94,12 @@ public class Mario extends Thread{
                 //碰撞到了
                 if(hit(Dir_Left)){
                     this.xspeed=0;
-                    this.img=new ImageIcon("src/images/mario_run0.png").getImage();
+                   // this.img=new ImageIcon("src/images/mario_run0.png").getImage();
                 }
 
                 if(this.x>=0){
                     this.x-=this.xspeed;
-                    this.img=new ImageIcon("src/images/mario_run0.png").getImage();
+                    //this.img=new ImageIcon("src/images/mario_run0.png").getImage();
                 }
 
                 this.xspeed=3;
@@ -76,11 +129,13 @@ public class Mario extends Thread{
                     //this.img=new ImageIcon("src/images/mario_run0.png").getImage();
                 }
                 this.xspeed=3;
+
+
             }
 
             //向上跳
             if(up){
-                this.img=new ImageIcon("src/images/mario_jump.png").getImage();
+
                 if(jumpFlag && !isGravity){ //true && !false (start)
 
                     jumpFlag=false;
@@ -95,10 +150,9 @@ public class Mario extends Thread{
                 }
 
             }
-            if (!right && !up && !left){
-                this.img=new ImageIcon("src/images/mario_stop.png").getImage();
-            }
 
+
+            Action();
             try {
                 this.sleep(20);
             } catch (InterruptedException e) {
@@ -216,4 +270,7 @@ public class Mario extends Thread{
         }.start();
 
     }
+
+
+
 }
