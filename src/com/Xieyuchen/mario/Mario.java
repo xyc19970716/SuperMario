@@ -27,7 +27,7 @@ public class Mario extends Thread{
 
 
     public int actionTime = 0;
-    public boolean actionLeft,actionRight, actionUp,actionDown;
+    public boolean actionLeft,actionRight=true, actionUp,actionDown;
 
     public boolean left=false,right=false,down=false,up=false;
 
@@ -44,11 +44,13 @@ public class Mario extends Thread{
             this.img = new ImageIcon("src/images/mario_right" + actionTime % 3 + ".png").getImage();
             actionTime++;
             actionRight = true;
+            actionLeft = false;
         }
         if (left) {
             this.img =  new ImageIcon("src/images/mario_left" + actionTime % 3 + ".png").getImage();
             actionTime++;
             actionLeft = true;
+            actionRight = false;
         }
         /*if (up && actionRight) {
             this.img= new ImageIcon("src/images/mario_jump_right.png").getImage();
@@ -60,7 +62,7 @@ public class Mario extends Thread{
             actionUp = true;
             actionLeft = false;
         }*/
-        /*if (up) {
+        if (up) {
             if (actionLeft) {
                 this.img= new ImageIcon("src/images/mario_jump_left.png").getImage();
                 //actionLeft = false;
@@ -69,19 +71,18 @@ public class Mario extends Thread{
                 this.img = new ImageIcon("src/images/mario_jump_right.png").getImage();
                 //actionRight = false;
             }
-            actionUp = true;
-        }*/
+
+        }
         if (up && right) {
             this.img= new ImageIcon("src/images/mario_jump_right.png").getImage();
-            actionUp = true;
+
             actionRight = false;
         }
         if (up && left) {
             this.img= new ImageIcon("src/images/mario_jump_left.png").getImage();
-            actionUp = true;
             actionLeft = false;
         }
-        if (!up && !right && !left) {
+       // if (!up && !right && !left) {
             //if (actionLeft) {
                 //this.img= new ImageIcon("src/images/mario_left.png").getImage();
                 //actionLeft = false;
@@ -90,8 +91,8 @@ public class Mario extends Thread{
                 //this.img = new ImageIcon("src/images/mario_right.png").getImage();
                 //actionRight = false;
             //}
-            this.img = new ImageIcon("src/images/mario_right.png").getImage();
-        }
+            //this.img = new ImageIcon("src/images/mario_right.png").getImage();
+        //}
        // actionUp=false;actionLeft=false;actionRight=false;
 
 
