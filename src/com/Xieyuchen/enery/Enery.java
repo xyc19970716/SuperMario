@@ -11,8 +11,9 @@ public abstract class Enery {
     public Enery(int x, int y, int width, int height,Image img) {
         this.x = x;
         this.y = y;
-        this.width = width;
-        this.height = height;
         this.img=img;
+        this.width = img.getWidth(null);
+        this.height = img.getHeight(null);
+
     }
 }

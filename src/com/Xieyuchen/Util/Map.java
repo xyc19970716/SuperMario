@@ -1,9 +1,6 @@
 package com.Xieyuchen.Util;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
 
 //地图配置类
@@ -16,7 +13,8 @@ public class Map {
 
     public  int[][] readMap() throws Exception {
         // 构造文件输入流
-        FileInputStream fis = new FileInputStream("map.txt");
+        File file = new File("C:\\Users\\46514\\IdeaProjects\\SuperMario\\src\\map.txt");
+        FileInputStream fis = new FileInputStream(file);
         InputStreamReader isr = new InputStreamReader(fis);
         BufferedReader br = new BufferedReader(isr);
 

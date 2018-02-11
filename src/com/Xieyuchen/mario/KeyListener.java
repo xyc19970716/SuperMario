@@ -18,8 +18,7 @@ public class KeyListener extends KeyAdapter{
 
     //键盘监听
     public void keyPressed(KeyEvent e) {
-        int code = e.getKeyCode();
-        switch(code){
+        switch(e.getKeyCode()){
             //向右走
             case 39:
                 gf.mario.right=true;
@@ -61,7 +60,7 @@ public class KeyListener extends KeyAdapter{
         if(code==37){
             gf.mario.left=false;
 
-            gf.mario.img=new ImageIcon("image/mari_left1.png").getImage();
+            gf.mario.img=new ImageIcon("images/mario_left1.png").getImage();
         }
 
         if(code==74){

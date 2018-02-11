@@ -5,9 +5,10 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
+import javax.swing.*;
 
+import com.Xieyuchen.enery.Brick;
+import com.Xieyuchen.enery.Coin;
 import com.Xieyuchen.enery.Enery;
 import com.Xieyuchen.enery.Pipe;
 
@@ -16,10 +17,11 @@ import com.Xieyuchen.Util.Map;
 public class GameFrame extends JFrame{
 
     public Mario mario;
-    public Enery pipe,cion,brick;
+    public Enery pipe, coin,brick;
     //背景图片
     public BackgroundImage bg ;
-
+    public  int GAME_FRAME_WIDTH = 255;
+    public  int GAME_FRAME_HEIGHT = 224;
     //容器装敌人
     public ArrayList<Enery> eneryList = new ArrayList<Enery>();
 
@@ -63,17 +65,17 @@ public class GameFrame extends JFrame{
             for (int j = 0; j < map[0].length; j++) {
                 //读取到的是1，画砖头
                 if(map[i][j]==1){
-                    brick = new Pipe(j*30,i*30,30,30,new ImageIcon("image/brick.png").getImage());
+                    brick = new Brick(j * 16,i * 16, 16, 16, new ImageIcon("src/images/brick.png").getImage());
                     eneryList.add(brick);
                 }
                 //读到2画金币
                 if(map[i][j]==2){
-                    cion = new Pipe(j*30,i*30,30,30,new ImageIcon("image/coin_brick.png").getImage());
-                    eneryList.add(cion);
+                    coin = new Coin(j*30,i*30, coin.width, coin.height, new ImageIcon("image/coin_brick.png").getImage());
+                    eneryList.add(coin);
                 }
                 //读到3画水管
                 if(map[i][j]==3){
-                    pipe = new Pipe(j*30,i*30,60,120,new ImageIcon("image/pipe.png").getImage());
+                    pipe = new Pipe(j*30,i*30, pipe.width, pipe.height, new ImageIcon("image/pipe.png").getImage());
                     eneryList.add(pipe);
                 }
 
@@ -85,11 +87,11 @@ public class GameFrame extends JFrame{
 
     public void initFrame(){
         //设置窗体相关属性
-        this.setSize(800,450);
+        this.setSize(255,224);
         this.setTitle("山寨版超级玛丽");
         this.setResizable(false);
         this.setLocationRelativeTo(null);
-        this.setDefaultCloseOperation(3);
+        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setVisible(true);
 
         //该窗体添加键盘监听
