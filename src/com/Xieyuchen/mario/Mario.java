@@ -15,13 +15,14 @@ public class Mario extends Thread{
     public boolean jumpFlag=true;
 
     //马里奥的坐标
-    public int x=0,y=358;
+    public int x=0+16*5,y= 224 - 16 - 2* 16 ;
     //马里奥的速度
     public int xspeed=5,yspeed=1;
-    //马里奥的宽高
-    public int width=30,height=32;
     //马里奥的图片
-    public Image img = new ImageIcon("image/mari1.png").getImage();
+    public  Image img = new ImageIcon("src/images/mario_stop.png").getImage();
+    //马里奥的宽高
+    public  int width = img.getWidth(null),height = img.getHeight(null);
+
 
     public boolean left=false,right=false,down=false,up=false;
 
@@ -44,7 +45,7 @@ public class Mario extends Thread{
 
                 if(this.x>=0){
                     this.x-=this.xspeed;
-                    this.img=new ImageIcon("image/mari_left.gif").getImage();
+                    this.img=new ImageIcon("src/images/mario_run0.png").getImage();
                 }
 
                 this.xspeed=5;
@@ -57,12 +58,12 @@ public class Mario extends Thread{
                     this.xspeed=0;
                 }
                 //任人物向右移动
-                if(this.x<400){
+                if(this.x<gf.GAME_FRAME_WIDTH){
                     this.x+=this.xspeed;
-                    this.img=new ImageIcon("image/mari_right.gif").getImage();
+                    this.img=new ImageIcon("src/images/mario_run0.png").getImage();
                 }
 
-                if(this.x>=400){
+                if(this.x>=gf.GAME_FRAME_WIDTH){
                     //背景向左移动
                     gf.bg.x-=this.xspeed;
                     //障碍物项左移动
@@ -70,7 +71,7 @@ public class Mario extends Thread{
                         Enery enery = gf.eneryList.get(i);
                         enery.x-=this.xspeed;
                     }
-                    this.img=new ImageIcon("image/mari_right.gif").getImage();
+                    this.img=new ImageIcon("src/images/mario_run0.png").getImage();
                 }
                 this.xspeed=5;
             }
@@ -88,7 +89,7 @@ public class Mario extends Thread{
                     }.start();
                 }
             }
-
+            this.img=new ImageIcon("src/images/mario_stop.png").getImage();
             try {
                 this.sleep(20);
             } catch (InterruptedException e) {
