@@ -1,7 +1,6 @@
 package com.Xieyuchen.mario;
 
-import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
@@ -47,6 +46,7 @@ public class GameFrame extends JFrame{
             public void run(){
                 while(true){
                     //重绘窗体
+                    System.out.println("draw");
                     repaint();
                     //检查子弹是否出界
                     checkBoom();
@@ -65,17 +65,17 @@ public class GameFrame extends JFrame{
             for (int j = 0; j < map[0].length; j++) {
                 //读取到的是1，画砖头
                 if(map[i][j]==1){
-                    brick = new Brick(j * 16,i * 16, new ImageIcon("src/images/brick.png").getImage());
+                    brick = new Brick(j * 16,i * 16, new ImageIcon("src/images/brick.png").getImage(),"brick");
                     eneryList.add(brick);
                 }
                 //读到2画金币
                 if(map[i][j]==2){
-                    coin = new Coin(j * 16,i * 16,  new ImageIcon("src/images/coin.png").getImage());
+                    coin = new Coin(j * 16,i * 16,  new ImageIcon("src/images/coin.png").getImage(),"coin");
                     eneryList.add(coin);
                 }
                 //读到3画水管
                 if(map[i][j]==3){
-                    pipe = new Pipe(j*16,i*16, new ImageIcon("src/images/pipe_tou.png").getImage());
+                    pipe = new Pipe(j*16,i*16, new ImageIcon("src/images/pipe_tou.png").getImage(),"pipe");
                     eneryList.add(pipe);
                 }
 
@@ -97,14 +97,34 @@ public class GameFrame extends JFrame{
         //该窗体添加键盘监听
         KeyListener kl = new KeyListener(this);
         this.addKeyListener(kl);
+
+        while (true) {
+            for (int i = 0; i <eneryList.size(); i++) {
+                Enery e =eneryList.get(i);
+                if (e.name.equals("coin")) {
+                    r.delay(400);
+                    e.img = new ImageIcon("src/images/coin" + actionEneryTime % 3 + ".png").getImage();
+                }
+            }
+            actionEneryTime++;
+
+        }
     }
+    public int actionEneryTime;
+
+    Robot r= new Robot();
 
     public void paint(Graphics g) {
         //利用双缓冲画背景图片和马里奥
         BufferedImage bi =(BufferedImage)this.createImage(this.getSize().width,this.getSize().height);
         Graphics big =bi.getGraphics();
         big.drawImage(bg.img, bg.x, bg.y, null);
+        if (bg.x == -2*255) {
+            bg.x = 0;
+        }
 
+
+        //总画
         for (int i = 0; i <eneryList.size(); i++) {
             Enery e =eneryList.get(i);
             big.drawImage(e.img, e.x, e.y, e.width, e.height,null);
@@ -115,13 +135,15 @@ public class GameFrame extends JFrame{
             Boom b =boomList.get(i);
             Color c =big.getColor();
             big.setColor(Color.red);
-            big.fillOval(b.x+=b.speed, b.y, b.width, b.width);
+            big.fillOval(b.x+=b.speed, b.y+=bspeed, b.width, b.width);
             big.setColor(c);
         }
 
         //画人物
         big.drawImage(mario.img, mario.x, mario.y, mario.width, mario.height,null);
         g.drawImage(bi,0,0,null);
+
+
 
     }
 

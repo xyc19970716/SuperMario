@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.ImageIcon;
 
 import com.Xieyuchen.enery.Enery;
+import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 
 //自己的角色类
 public class Mario extends Thread{
@@ -16,9 +17,9 @@ public class Mario extends Thread{
     public boolean jumpFlag=true;
 
     //马里奥的坐标
-    public int x=0+16*5,y= 224 - 16 - 2* 16 ;
+    public int x=0+16*5,y= 224 - 16 - 2* 16-1-1 ;
     //马里奥的速度
-    public int xspeed=1,yspeed=1;
+    public int xspeed=2,yspeed=1;
     //马里奥的图片
     public  Image img = new ImageIcon("src/images/mario_right.png").getImage();
     //马里奥的宽高
@@ -40,18 +41,19 @@ public class Mario extends Thread{
     }
 
     public void Action() {
-        if (right) {
-            this.img = new ImageIcon("src/images/mario_right" + actionTime % 3 + ".png").getImage();
-            actionTime++;
-            actionRight = true;
-            actionLeft = false;
-        }
-        if (left) {
-            this.img =  new ImageIcon("src/images/mario_left" + actionTime % 3 + ".png").getImage();
-            actionTime++;
-            actionLeft = true;
-            actionRight = false;
-        }
+        if (!isGravity) {
+            if (right) {
+                this.img = new ImageIcon("src/images/mario_right" + actionTime % 3 + ".png").getImage();
+                actionTime++;
+                actionRight = true;
+                actionLeft = false;
+            }
+            if (left) {
+                this.img =  new ImageIcon("src/images/mario_left" + actionTime % 3 + ".png").getImage();
+                actionTime++;
+                actionLeft = true;
+                actionRight = false;
+            }
         /*if (up && actionRight) {
             this.img= new ImageIcon("src/images/mario_jump_right.png").getImage();
             actionUp = true;
@@ -62,44 +64,50 @@ public class Mario extends Thread{
             actionUp = true;
             actionLeft = false;
         }*/
-        if (up) {
-            if (actionLeft) {
+            if (up) {
+                if (actionLeft) {
+                    this.img= new ImageIcon("src/images/mario_jump_left.png").getImage();
+                    //actionLeft = false;
+                }
+                if (actionRight) {
+                    this.img = new ImageIcon("src/images/mario_jump_right.png").getImage();
+                    //actionRight = false;
+                }
+
+            }
+            if (up && right) {
+                this.img= new ImageIcon("src/images/mario_jump_right.png").getImage();
+
+                actionRight = false;
+            }
+            if (up && left) {
                 this.img= new ImageIcon("src/images/mario_jump_left.png").getImage();
-                //actionLeft = false;
+                actionLeft = false;
             }
-            if (actionRight) {
-                this.img = new ImageIcon("src/images/mario_jump_right.png").getImage();
-                //actionRight = false;
-            }
-
-        }
-        if (up && right) {
-            this.img= new ImageIcon("src/images/mario_jump_right.png").getImage();
-
-            actionRight = false;
-        }
-        if (up && left) {
-            this.img= new ImageIcon("src/images/mario_jump_left.png").getImage();
-            actionLeft = false;
-        }
-       // if (!up && !right && !left) {
+            // if (!up && !right && !left) {
             //if (actionLeft) {
-                //this.img= new ImageIcon("src/images/mario_left.png").getImage();
-                //actionLeft = false;
-           // }
+            //this.img= new ImageIcon("src/images/mario_left.png").getImage();
+            //actionLeft = false;
+            // }
             //if (actionRight) {
-                //this.img = new ImageIcon("src/images/mario_right.png").getImage();
-                //actionRight = false;
+            //this.img = new ImageIcon("src/images/mario_right.png").getImage();
+            //actionRight = false;
             //}
             //this.img = new ImageIcon("src/images/mario_right.png").getImage();
-        //}
-       // actionUp=false;actionLeft=false;actionRight=false;
+            //}
+            // actionUp=false;actionLeft=false;actionRight=false;
+        }
+        else {
+            //下落图找不到
+        }
+
 
 
     }
 
     public void run(){
         while(true){
+            System.out.println("this is mario thread.");
             //向左走
             if(left){
                 //碰撞到了
@@ -113,7 +121,7 @@ public class Mario extends Thread{
                     //this.img=new ImageIcon("src/images/mario_run0.png").getImage();
                 }
 
-                this.xspeed=3;
+                this.xspeed=2;
             }
 
             //向右走
@@ -124,12 +132,12 @@ public class Mario extends Thread{
                     //this.img=new ImageIcon("src/images/mario_run0.png").getImage();
                 }
                 //任人物向右移动
-                if(this.x<gf.GAME_FRAME_WIDTH){
+                if(this.x<gf.GAME_FRAME_WIDTH / 2){
                     this.x+=this.xspeed;
                     //this.img=new ImageIcon("src/images/mario_run0.png").getImage();
                 }
 
-                if(this.x>=gf.GAME_FRAME_WIDTH){
+                if(this.x>=gf.GAME_FRAME_WIDTH / 2){
                     //背景向左移动
                     gf.bg.x-=this.xspeed;
                     //障碍物项左移动
@@ -139,7 +147,7 @@ public class Mario extends Thread{
                     }
                     //this.img=new ImageIcon("src/images/mario_run0.png").getImage();
                 }
-                this.xspeed=3;
+                this.xspeed=2;
 
 
             }
@@ -150,13 +158,12 @@ public class Mario extends Thread{
                 if(jumpFlag && !isGravity){ //true && !false (start)
 
                     jumpFlag=false;
-                    new Thread(){
-                        public void run(){
-                            jump();
-                            jumpFlag=true;
+                   new Thread(() -> {
+                        System.out.println("this is jump thread.");
+                        jump();
+                        jumpFlag=true;
 
-                        }
-                    }.start();
+                    }).start();
 
                 }
 
@@ -165,7 +172,7 @@ public class Mario extends Thread{
 
             Action();
             try {
-                this.sleep(20);
+                this.sleep(40);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -176,14 +183,14 @@ public class Mario extends Thread{
     //向上跳的函数
     public void jump(){
         int jumpHeigh=0;
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 60; i++) {
             gf.mario.y-=this.yspeed;
             jumpHeigh++;
             if(hit(Dir_Up)){
                 break;
             }
             try {
-                Thread.sleep(5);
+                Thread.sleep(8);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -194,7 +201,7 @@ public class Mario extends Thread{
                 this.yspeed=0;
             }
             try {
-                Thread.sleep(5);
+                Thread.sleep(8);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -217,7 +224,7 @@ public class Mario extends Thread{
                 rect = new Rectangle(enery.x+2,enery.y,enery.width,enery.height);
             }
             else if(dir.equals("Right")){
-                rect = new Rectangle(enery.x-2,enery.y,enery.width,enery.height);
+                rect = new Rectangle(enery.x-1,enery.y,enery.width,enery.height);
             }
 
             else if(dir.equals("Up")){
@@ -235,51 +242,63 @@ public class Mario extends Thread{
     }
 
     //检查是否贴地
-    public boolean isGravity=false;
+    public boolean isGravity=false;//不会掉
 
     public void Gravity(){
-        new Thread(){
-            public void run(){
+        new Thread(() -> {
 
+            while(true){
+                try {
+                    sleep(10);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                if(!jumpFlag){
+
+                }
+                System.out.println("this is gravity thread.");
                 while(true){
+                   if(!jumpFlag){
+                        break;
+                    }
+
+                   if(hit(Dir_Down)){
+                       isGravity=false;
+                       break;
+                    }
+
+                    /*if(y>=224){
+
+
+                    }*/
+                    else if (y<=224){
+                        isGravity=true;
+                        y+=yspeed;
+                    }
+                    if (y>224) {
+                        Dead dead = new Dead(this.gf);
+
+                        dead.showDead(gf.mario.x,gf.mario.y);
+                    }
+
                     try {
                         sleep(10);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-
-                    if(!jumpFlag){
-
-                    }
-
-                    while(true){
-                        if(!jumpFlag){
-                            break;
-                        }
-
-                        if(hit(Dir_Down)){
-                            break;
-                        }
-
-                        if(y>=224){
-                            isGravity=false;
-
-                        }
-                        else{
-                            isGravity=true;
-                            y+=yspeed;
-                        }
-
-                        try {
-                            sleep(10);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
                 }
             }
-        }.start();
+        }).start();
 
+    }
+
+    //添加子弹
+    public void addBoom() {
+        Boom b = new Boom(gf.mario.x,gf.mario.y+5,5);
+        if(gf.mario.actionLeft) b.speed=-2;
+        if(gf.mario.actionRight) b.speed=2;
+        gf.boomList.add(b);
     }
 
 
