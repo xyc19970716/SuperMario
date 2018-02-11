@@ -20,7 +20,7 @@ public class Mario extends Thread{
     //马里奥的速度
     public int xspeed=1,yspeed=1;
     //马里奥的图片
-    public  Image img = new ImageIcon("src/images/mario_stop.png").getImage();
+    public  Image img = new ImageIcon("src/images/mario_right.png").getImage();
     //马里奥的宽高
     public  int width = img.getWidth(null),height = img.getHeight(null);
 
@@ -50,7 +50,7 @@ public class Mario extends Thread{
             actionTime++;
             actionLeft = true;
         }
-        if (up && actionRight) {
+        /*if (up && actionRight) {
             this.img= new ImageIcon("src/images/mario_jump_right.png").getImage();
             actionUp = true;
             actionRight = false;
@@ -59,30 +59,40 @@ public class Mario extends Thread{
             this.img= new ImageIcon("src/images/mario_jump_left.png").getImage();
             actionUp = true;
             actionLeft = false;
+        }*/
+        /*if (up) {
+            if (actionLeft) {
+                this.img= new ImageIcon("src/images/mario_jump_left.png").getImage();
+                //actionLeft = false;
+            }
+            if (actionRight) {
+                this.img = new ImageIcon("src/images/mario_jump_right.png").getImage();
+                //actionRight = false;
+            }
+            actionUp = true;
+        }*/
+        if (up && right) {
+            this.img= new ImageIcon("src/images/mario_jump_right.png").getImage();
+            actionUp = true;
+            actionRight = false;
+        }
+        if (up && left) {
+            this.img= new ImageIcon("src/images/mario_jump_left.png").getImage();
+            actionUp = true;
+            actionLeft = false;
         }
         if (!up && !right && !left) {
-            if (actionLeft) {
-                this.img= new ImageIcon("src/images/mario_left.png").getImage();
-                actionLeft = false;
-            }
-            if (actionRight) {
-                this.img = new ImageIcon("src/images/mario_right.png").getImage();
-                actionRight = false;
-            }
+            //if (actionLeft) {
+                //this.img= new ImageIcon("src/images/mario_left.png").getImage();
+                //actionLeft = false;
+           // }
+            //if (actionRight) {
+                //this.img = new ImageIcon("src/images/mario_right.png").getImage();
+                //actionRight = false;
+            //}
+            this.img = new ImageIcon("src/images/mario_right.png").getImage();
         }
-        if (up) {
-            if (actionLeft) {
-                this.img= new ImageIcon("src/images/mario_left.png").getImage();
-                actionLeft = false;
-            }
-            if (actionRight) {
-                this.img = new ImageIcon("src/images/mario_right.png").getImage();
-                actionRight = false;
-            }
-        }
-
-
-
+       // actionUp=false;actionLeft=false;actionRight=false;
 
 
     }
