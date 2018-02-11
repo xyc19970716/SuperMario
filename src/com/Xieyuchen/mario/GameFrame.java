@@ -70,7 +70,7 @@ public class GameFrame extends JFrame{
                 }
                 //读到2画金币
                 if(map[i][j]==2){
-                    coin = new Coin(j*30,i*30, coin.width, coin.height, new ImageIcon("image/coin_brick.png").getImage());
+                    coin = new Coin(j * 16,i * 16, 16, 16, new ImageIcon("src/images/coin.png").getImage());
                     eneryList.add(coin);
                 }
                 //读到3画水管

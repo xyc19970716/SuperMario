@@ -20,11 +20,11 @@ public class KeyListener extends KeyAdapter{
     public void keyPressed(KeyEvent e) {
         switch(e.getKeyCode()){
             //向右走
-            case 39:
+            case KeyEvent.VK_RIGHT:
                 gf.mario.right=true;
                 break;
             //向左走
-            case 37:
+            case KeyEvent.VK_LEFT:
                 gf.mario.left=true;
                 break;
 
@@ -33,9 +33,10 @@ public class KeyListener extends KeyAdapter{
                 break;
 
             //向上跳
-            case 74:
+            case KeyEvent.VK_SPACE:
                 gf.mario.up=true;
                 break;
+
         }
     }
 
@@ -50,22 +51,22 @@ public class KeyListener extends KeyAdapter{
     //键盘释放监听
     public void keyReleased(KeyEvent e) {
 
-        int code=e.getKeyCode();
-        if(code==39){
+        switch(e.getKeyCode()){
+            //向右走
+            case KeyEvent.VK_RIGHT:
+                gf.mario.right = false;
+                break;
+            //向左走
+            case KeyEvent.VK_LEFT:
+                gf.mario.left = false;
+                break;
 
-            gf.mario.right=false;
 
-            gf.mario.img=new ImageIcon("image/mari1.png").getImage();
-        }
-        if(code==37){
-            gf.mario.left=false;
 
-            gf.mario.img=new ImageIcon("images/mario_left1.png").getImage();
-        }
-
-        if(code==74){
-            gf.mario.up=false;
-
+            //向上跳
+            case KeyEvent.VK_SPACE:
+                gf.mario.up = false;
+                break;
         }
     }
 

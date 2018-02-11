@@ -17,7 +17,7 @@ public class Mario extends Thread{
     //马里奥的坐标
     public int x=0+16*5,y= 224 - 16 - 2* 16 ;
     //马里奥的速度
-    public int xspeed=5,yspeed=1;
+    public int xspeed=1,yspeed=1;
     //马里奥的图片
     public  Image img = new ImageIcon("src/images/mario_stop.png").getImage();
     //马里奥的宽高
@@ -41,6 +41,7 @@ public class Mario extends Thread{
                 //碰撞到了
                 if(hit(Dir_Left)){
                     this.xspeed=0;
+                    this.img=new ImageIcon("src/images/mario_run0.png").getImage();
                 }
 
                 if(this.x>=0){
@@ -48,7 +49,7 @@ public class Mario extends Thread{
                     this.img=new ImageIcon("src/images/mario_run0.png").getImage();
                 }
 
-                this.xspeed=5;
+                this.xspeed=3;
             }
 
             //向右走
@@ -56,11 +57,12 @@ public class Mario extends Thread{
 
                 if(hit(Dir_Right)){
                     this.xspeed=0;
+                    //this.img=new ImageIcon("src/images/mario_run0.png").getImage();
                 }
                 //任人物向右移动
                 if(this.x<gf.GAME_FRAME_WIDTH){
                     this.x+=this.xspeed;
-                    this.img=new ImageIcon("src/images/mario_run0.png").getImage();
+                    //this.img=new ImageIcon("src/images/mario_run0.png").getImage();
                 }
 
                 if(this.x>=gf.GAME_FRAME_WIDTH){
@@ -71,25 +73,32 @@ public class Mario extends Thread{
                         Enery enery = gf.eneryList.get(i);
                         enery.x-=this.xspeed;
                     }
-                    this.img=new ImageIcon("src/images/mario_run0.png").getImage();
+                    //this.img=new ImageIcon("src/images/mario_run0.png").getImage();
                 }
-                this.xspeed=5;
+                this.xspeed=3;
             }
 
             //向上跳
             if(up){
+                this.img=new ImageIcon("src/images/mario_jump.png").getImage();
+                if(jumpFlag && !isGravity){ //true && !false (start)
 
-                if(jumpFlag && !isGravity){
                     jumpFlag=false;
                     new Thread(){
                         public void run(){
                             jump();
                             jumpFlag=true;
+
                         }
                     }.start();
+
                 }
+
             }
-            this.img=new ImageIcon("src/images/mario_stop.png").getImage();
+            if (!right && !up && !left){
+                this.img=new ImageIcon("src/images/mario_stop.png").getImage();
+            }
+
             try {
                 this.sleep(20);
             } catch (InterruptedException e) {
@@ -102,7 +111,7 @@ public class Mario extends Thread{
     //向上跳的函数
     public void jump(){
         int jumpHeigh=0;
-        for (int i = 0; i < 150; i++) {
+        for (int i = 0; i < 50; i++) {
             gf.mario.y-=this.yspeed;
             jumpHeigh++;
             if(hit(Dir_Up)){
@@ -128,6 +137,7 @@ public class Mario extends Thread{
 
         }
         this.yspeed=1;//还原速度
+
     }
 
     //检测碰撞
@@ -186,8 +196,9 @@ public class Mario extends Thread{
                             break;
                         }
 
-                        if(y>=358){
+                        if(y>=224){
                             isGravity=false;
+
                         }
                         else{
                             isGravity=true;
