@@ -153,6 +153,7 @@ public class Mario extends Thread{
                 //碰撞到了
                 if(hit(Dir_Left)){
                     this.xspeed=0;
+
                    // this.img=new ImageIcon("src/images/mario_run0.png").getImage();
                 }
 
@@ -173,6 +174,7 @@ public class Mario extends Thread{
 
                 if(hit(Dir_Right)){
                     this.xspeed=0;
+
                     //this.img=new ImageIcon("src/images/mario_run0.png").getImage();
                 }
                 //任人物向右移动
@@ -239,7 +241,7 @@ public class Mario extends Thread{
         for (int i = 0; i < Length; i++) {
             gf.mario.y-=this.yspeed;
             jumpHeigh++;
-            if(hit(Dir_Up)||hit(Dir_Left) || hit(Dir_Right)||hit(Dir_Up)&&hit(Dir_Left)||hit(Dir_Up)&& hit(Dir_Right)){
+            if(hit(Dir_Up)/*||hit(Dir_Left) || hit(Dir_Right)||hit(Dir_Up)&&hit(Dir_Left)||hit(Dir_Up)&& hit(Dir_Right)*/){
 
 
                 break;
@@ -274,7 +276,7 @@ public class Mario extends Thread{
     public boolean hit(String dir){
         Rectangle myrect = new Rectangle(this.x,this.y,this.width,this.height);
         Rectangle rect =null;
-
+        boolean isColliding = false;
         for (int i = 0; i < gf.eneryList.size(); i++) {
             Enery enery = gf.eneryList.get(i);
             if (eatMushroom && enery.name.equals("CreateBigMushroom") && eatId == enery.Id) {//找到吃掉的蘑菇删除它
@@ -283,19 +285,29 @@ public class Mario extends Thread{
             }
             if(dir.equals("Left")){
                 rect = new Rectangle(enery.x+2,enery.y,enery.width,enery.height);//x+2
+                /*if (this.y > enery.y + enery.height ||enery.y > this.y + this.height
+                        || this.x > enery.x + enery.width || enery.x > this.x + this.width) {
+                     isColliding = false;
+                } else {
+                    isColliding = true;
+                }*/
+
             }
             else if(dir.equals("Right")){
                 rect = new Rectangle(enery.x-1,enery.y,enery.width,enery.height);//x-1
+
             }
 
             else if(dir.equals("Up")){
                 rect = new Rectangle(enery.x,enery.y+1,enery.width,enery.height);//y+1
 
+
             }else if(dir.equals("Down")){
                 rect = new Rectangle(enery.x,enery.y-2,enery.width,enery.height);//y-2
+
             }
             //碰撞检测
-            if(myrect.intersects(rect)){
+            if( myrect.intersects(rect)){
                 if (enery.name=="coin"&& dir.equals("Up")) {  //创建蘑菇
                     System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaMushroom");
                     Mushroom createBigMushroom = new Mushroom(enery.x, enery.y, new ImageIcon("src/images/createBigMushroom.png").getImage(), "CreateBigMushroom");
@@ -362,9 +374,12 @@ public class Mario extends Thread{
 
 
                     }*/
-                    else if (y<=224 || hit(Dir_Up)){
-                        isGravity=true;
-                        y+=yspeed;
+                    else if (y<=224){
+                        if (!hit(Dir_Down)) {
+                            isGravity=true;
+                            y+=yspeed;
+                        }
+
                     }
                     if (y>224) {
                         Dead dead = new Dead(this.gf);
