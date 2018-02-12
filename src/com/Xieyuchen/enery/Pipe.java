@@ -8,4 +8,6 @@ public class Pipe extends Enery {
     public Pipe(int x, int y, Image img,String name) {
         super(x, y,  img,name);
     }
+
+
 }

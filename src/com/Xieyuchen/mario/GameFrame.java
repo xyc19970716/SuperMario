@@ -16,7 +16,7 @@ import com.Xieyuchen.Util.Map;
 public class GameFrame extends JFrame{
 
     public Mario mario;
-    public Enery pipe, coin,brick;
+    public Enery pipe_tou, coin,brick,pipe_sheng;
     //背景图片
     public BackgroundImage bg ;
     public  int GAME_FRAME_WIDTH = 255;
@@ -51,7 +51,7 @@ public class GameFrame extends JFrame{
                     //检查子弹是否出界
                     checkBoom();
                     try {
-                        Thread.sleep(10);
+                        Thread.sleep(40);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -61,26 +61,64 @@ public class GameFrame extends JFrame{
 
         map=mp.readMap();
         //读取地图，并配置地图
+
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[0].length; j++) {
                 //读取到的是1，画砖头
                 if(map[i][j]==1){
                     brick = new Brick(j * 16,i * 16, new ImageIcon("src/images/brick.png").getImage(),"brick");
+                    brick.Id = eneryList.size()-1;
                     eneryList.add(brick);
                 }
                 //读到2画金币
                 if(map[i][j]==2){
                     coin = new Coin(j * 16,i * 16,  new ImageIcon("src/images/coin.png").getImage(),"coin");
+                    coin.Id = eneryList.size()-1;
                     eneryList.add(coin);
                 }
                 //读到3画水管
                 if(map[i][j]==3){
-                    pipe = new Pipe(j*16,i*16, new ImageIcon("src/images/pipe_tou.png").getImage(),"pipe");
-                    eneryList.add(pipe);
+                    pipe_tou = new Pipe(j*16,i*16, new ImageIcon("src/images/pipe_tou.png").getImage(),"pipetou");
+                    pipe_tou.Id = eneryList.size()-1;
+                    eneryList.add(pipe_tou);
+                    if (map[i+2][j] == 0 ) {
+                        pipe_sheng = new Pipe(j * 16+2,(i+2)*16,new ImageIcon("src/images/pipe_sheng.png").getImage(),"pipesheng");
+                        pipe_sheng.Id = eneryList.size()-1;
+                        eneryList.add(pipe_sheng);
+                    }
+                    if (map[i+3][j] == 0 ) {
+                        pipe_sheng = new Pipe(j * 16+2,(i+3)*16,new ImageIcon("src/images/pipe_sheng.png").getImage(),"pipesheng");
+                        pipe_sheng.Id = eneryList.size()-1;
+                        eneryList.add(pipe_sheng);
+                    }
                 }
+
 
             }
         }
+        //读完整水管
+       /* for (int i = 0; i < map.length; i++) {
+            for (int j = 0; j < map[0].length; j++) {
+                if(map[i][j]==3) {
+                    if (map[i+2][j] == 0 ) {
+                        pipe_sheng = new Pipe(j * 16+2,(i+2)*16,new ImageIcon("src/images/pipe_sheng.png").getImage(),"pipesheng");
+                        pipe_sheng.Id = eneryList.size()-1;
+                        eneryList.add(pipe_sheng);
+                    }
+                    if (map[i+3][j] == 0 ) {
+                        pipe_sheng = new Pipe(j * 16+2,(i+3)*16,new ImageIcon("src/images/pipe_sheng.png").getImage(),"pipesheng");
+                        pipe_sheng.Id = eneryList.size()-1;
+                        eneryList.add(pipe_sheng);
+                    }
+                    /*if (map[i+4][j] == 0 ) {
+                        pipe_sheng = new Pipe(j * 16+2,(i+4)*16,new ImageIcon("src/images/pipe_sheng.png").getImage(),"pipesheng");
+                        pipe_sheng.Id = eneryList.size()-1;
+                        eneryList.add(pipe_sheng);
+                    }*/
+               // }
+           // }
+       // }*/
+
         //设置背景音乐
         //com.Xieyuchen.music.Util.startMusic("music/bg1.wav");
     }

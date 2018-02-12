@@ -7,6 +7,7 @@ import java.util.Random;
 
 import javax.swing.ImageIcon;
 
+import com.Xieyuchen.enery.Coin;
 import com.Xieyuchen.enery.Enery;
 import com.Xieyuchen.enery.Mushroom;
 import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
@@ -160,7 +161,11 @@ public class Mario extends Thread{
                     //this.img=new ImageIcon("src/images/mario_run0.png").getImage();
                 }
 
-                this.xspeed=2;
+                if (this.status == STATUS_BIG) {
+                    this.xspeed=4;
+                }
+                this.xspeed = 2;
+
             }
 
             //向右走
@@ -186,7 +191,10 @@ public class Mario extends Thread{
                     }
                     //this.img=new ImageIcon("src/images/mario_run0.png").getImage();
                 }
-                this.xspeed=2;
+                if (this.status == STATUS_BIG) {
+                    this.xspeed=4;
+                }
+                this.xspeed = 2;
 
 
             }
@@ -222,10 +230,18 @@ public class Mario extends Thread{
     //向上跳的函数
     public void jump(){
         int jumpHeigh=0;
-        for (int i = 0; i < 60; i++) {
+        int Length;
+        if (this.status == STATUS_BIG) {
+            Length = 80;
+        } else {
+            Length = 60;
+        }
+        for (int i = 0; i < Length; i++) {
             gf.mario.y-=this.yspeed;
             jumpHeigh++;
-            if(hit(Dir_Up)){
+            if(hit(Dir_Up)||hit(Dir_Left) || hit(Dir_Right)||hit(Dir_Up)&&hit(Dir_Left)||hit(Dir_Up)&& hit(Dir_Right)){
+
+
                 break;
             }
             try {
@@ -247,6 +263,9 @@ public class Mario extends Thread{
 
 
         }
+        if (this.status == STATUS_BIG) {
+            this.yspeed = 4;
+        }
         this.yspeed=1;//还原速度
 
     }
@@ -263,17 +282,17 @@ public class Mario extends Thread{
                 eatMushroom = false;
             }
             if(dir.equals("Left")){
-                rect = new Rectangle(enery.x+2,enery.y,enery.width,enery.height);
+                rect = new Rectangle(enery.x+2,enery.y,enery.width,enery.height);//x+2
             }
             else if(dir.equals("Right")){
-                rect = new Rectangle(enery.x-1,enery.y,enery.width,enery.height);
+                rect = new Rectangle(enery.x-1,enery.y,enery.width,enery.height);//x-1
             }
 
             else if(dir.equals("Up")){
-                rect = new Rectangle(enery.x,enery.y+1,enery.width,enery.height);
+                rect = new Rectangle(enery.x,enery.y+1,enery.width,enery.height);//y+1
 
             }else if(dir.equals("Down")){
-                rect = new Rectangle(enery.x,enery.y-2,enery.width,enery.height);
+                rect = new Rectangle(enery.x,enery.y-2,enery.width,enery.height);//y-2
             }
             //碰撞检测
             if(myrect.intersects(rect)){
@@ -283,6 +302,10 @@ public class Mario extends Thread{
                     createBigMushroom.x = enery.x;
                     createBigMushroom.y = enery.y - createBigMushroom.height;
                     createBigMushroom.Id = gf.eneryList.size();
+                    Enery coin = new Coin(enery.x,enery.y,  new ImageIcon("src/images/withoutcoin.png").getImage(),"without coin");//顶过就没了
+                    coin.Id = enery.Id;
+                    gf.eneryList.remove(enery);
+                    gf.eneryList.add(coin);
                     gf.eneryList.add(createBigMushroom);
 
                 }
@@ -297,7 +320,8 @@ public class Mario extends Thread{
                     gf.mario.height = gf.mario.img.getHeight(null);
                     gf.mario.x = gf.mario.x - gf.mario.width;
                     gf.mario.y = gf.mario.y - gf.mario.height;
-
+                    gf.mario.xspeed = 8;
+                    gf.mario.yspeed = 8;
 
                 }
                 return true;
@@ -338,13 +362,13 @@ public class Mario extends Thread{
 
 
                     }*/
-                    else if (y<=224){
+                    else if (y<=224 || hit(Dir_Up)){
                         isGravity=true;
                         y+=yspeed;
                     }
                     if (y>224) {
                         Dead dead = new Dead(this.gf);
-
+                        gf.mario.stop();
                         dead.showDead(gf.mario.x,gf.mario.y);
                     }
 
