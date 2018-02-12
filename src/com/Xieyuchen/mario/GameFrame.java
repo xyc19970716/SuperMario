@@ -87,7 +87,7 @@ public class GameFrame extends JFrame{
 
     public void initFrame(){
         //设置窗体相关属性
-        this.setSize(255,224);
+        this.setSize(GAME_FRAME_WIDTH,GAME_FRAME_HEIGHT);
         this.setTitle("山寨版超级玛丽");
         this.setResizable(false);
         this.setLocationRelativeTo(null);
@@ -103,10 +103,14 @@ public class GameFrame extends JFrame{
                 Enery e =eneryList.get(i);
                 if (e.name.equals("coin")) {
                     r.delay(400);
-                    e.img = new ImageIcon("src/images/coin" + actionEneryTime % 3 + ".png").getImage();
+                    e.img = new ImageIcon("src/images/coin" + actionEneryTime  + ".png").getImage();
+                    actionEneryTime++;
+                    if (actionEneryTime == 3) {
+                        actionEneryTime = 0;
+                    }
                 }
             }
-            actionEneryTime++;
+
 
         }
     }
@@ -124,6 +128,7 @@ public class GameFrame extends JFrame{
         }
 
 
+
         //总画
         for (int i = 0; i <eneryList.size(); i++) {
             Enery e =eneryList.get(i);
@@ -135,7 +140,7 @@ public class GameFrame extends JFrame{
             Boom b =boomList.get(i);
             Color c =big.getColor();
             big.setColor(Color.red);
-            big.fillOval(b.x+=b.speed, b.y+=bspeed, b.width, b.width);
+            big.fillOval(b.x+= b.speed, b.y+=bspeed, b.width, b.width);
             big.setColor(c);
         }
 

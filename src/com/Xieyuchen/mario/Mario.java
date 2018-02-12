@@ -3,10 +3,12 @@ package com.Xieyuchen.mario;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.util.Random;
 
 import javax.swing.ImageIcon;
 
 import com.Xieyuchen.enery.Enery;
+import com.Xieyuchen.enery.Mushroom;
 import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 
 //自己的角色类
@@ -24,9 +26,15 @@ public class Mario extends Thread{
     public  Image img = new ImageIcon("src/images/mario_right.png").getImage();
     //马里奥的宽高
     public  int width = img.getWidth(null),height = img.getHeight(null);
+    //马里奥的状态 0=dead 1=small 2=big
+    public int status=1;
+    public int STATUS_DEAD = 0;
+    public int STATUS_SMALL = 1;
+    public int STATUS_BIG = 2;
 
+    public boolean eatMushroom = false;//
 
-
+    public int eatId;//蘑菇
     public int actionTime = 0;
     public boolean actionLeft,actionRight=true, actionUp,actionDown;
 
@@ -43,13 +51,23 @@ public class Mario extends Thread{
     public void Action() {
         if (!isGravity) {
             if (right) {
-                this.img = new ImageIcon("src/images/mario_right" + actionTime % 3 + ".png").getImage();
+                if (this.status == STATUS_SMALL) {
+                    this.img = new ImageIcon("src/images/mario_right" + actionTime % 3 + ".png").getImage();
+
+                } else if (this.status == STATUS_BIG) {
+                    this.img = new ImageIcon("src/images/bigmario_right" + actionTime % 3 + ".png").getImage();
+                }
                 actionTime++;
                 actionRight = true;
                 actionLeft = false;
             }
             if (left) {
-                this.img =  new ImageIcon("src/images/mario_left" + actionTime % 3 + ".png").getImage();
+                if (this.status == STATUS_SMALL) {
+                    this.img =  new ImageIcon("src/images/mario_left" + actionTime % 3 + ".png").getImage();
+
+                } else if (this.status == STATUS_BIG) {
+                    this.img = new ImageIcon("src/images/bigmario_left" + actionTime % 3 + ".png").getImage();
+                }
                 actionTime++;
                 actionLeft = true;
                 actionRight = false;
@@ -66,23 +84,44 @@ public class Mario extends Thread{
         }*/
             if (up) {
                 if (actionLeft) {
-                    this.img= new ImageIcon("src/images/mario_jump_left.png").getImage();
-                    //actionLeft = false;
+                    if (this.status == STATUS_SMALL) {
+                        this.img= new ImageIcon("src/images/mario_jump_left.png").getImage();
+                        //actionLeft = false;
+                    } else if (this.status == STATUS_BIG) {
+                        this.img= new ImageIcon("src/images/bigmario_jump_left.png").getImage();
+                    }
+
                 }
                 if (actionRight) {
-                    this.img = new ImageIcon("src/images/mario_jump_right.png").getImage();
-                    //actionRight = false;
+                    if (this.status == STATUS_SMALL) {
+                        this.img = new ImageIcon("src/images/mario_jump_right.png").getImage();
+                        //actionRight = false;
+                    } else if (this.status == STATUS_BIG) {
+                        this.img= new ImageIcon("src/images/bigmario_jump_right.png").getImage();
+                    }
+
                 }
 
             }
             if (up && right) {
-                this.img= new ImageIcon("src/images/mario_jump_right.png").getImage();
+                if (this.status == STATUS_SMALL) {
+                    this.img= new ImageIcon("src/images/mario_jump_right.png").getImage();
 
+
+                } else if (this.status == STATUS_BIG) {
+                    this.img= new ImageIcon("src/images/bigmario_jump_right.png").getImage();
+                }
                 actionRight = false;
             }
             if (up && left) {
-                this.img= new ImageIcon("src/images/mario_jump_left.png").getImage();
+                if (this.status == STATUS_SMALL) {
+                    this.img= new ImageIcon("src/images/mario_jump_left.png").getImage();
+
+                } else if (this.status == STATUS_BIG) {
+                    this.img= new ImageIcon("src/images/bigmario_jump_left.png").getImage();
+                }
                 actionLeft = false;
+
             }
             // if (!up && !right && !left) {
             //if (actionLeft) {
@@ -219,7 +258,10 @@ public class Mario extends Thread{
 
         for (int i = 0; i < gf.eneryList.size(); i++) {
             Enery enery = gf.eneryList.get(i);
-
+            if (eatMushroom && enery.name.equals("CreateBigMushroom") && eatId == enery.Id) {//找到吃掉的蘑菇删除它
+                gf.eneryList.remove(enery);
+                eatMushroom = false;
+            }
             if(dir.equals("Left")){
                 rect = new Rectangle(enery.x+2,enery.y,enery.width,enery.height);
             }
@@ -229,11 +271,35 @@ public class Mario extends Thread{
 
             else if(dir.equals("Up")){
                 rect = new Rectangle(enery.x,enery.y+1,enery.width,enery.height);
+
             }else if(dir.equals("Down")){
                 rect = new Rectangle(enery.x,enery.y-2,enery.width,enery.height);
             }
             //碰撞检测
             if(myrect.intersects(rect)){
+                if (enery.name=="coin"&& dir.equals("Up")) {  //创建蘑菇
+                    System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaMushroom");
+                    Mushroom createBigMushroom = new Mushroom(enery.x, enery.y, new ImageIcon("src/images/createBigMushroom.png").getImage(), "CreateBigMushroom");
+                    createBigMushroom.x = enery.x;
+                    createBigMushroom.y = enery.y - createBigMushroom.height;
+                    createBigMushroom.Id = gf.eneryList.size();
+                    gf.eneryList.add(createBigMushroom);
+
+                }
+                if (enery.name=="CreateBigMushroom" && (dir.equals("Left") ||dir.equals("Right") ||dir.equals("Down"))) { //吃蘑菇变大
+                    eatMushroom = true;
+                    eatId = enery.Id;
+                    gf.mario.status=STATUS_BIG;
+                    gf.mario.x = gf.mario.x + gf.mario.width;
+                    gf.mario.y = gf.mario.y + gf.mario.height;
+                    gf.mario.img = new ImageIcon("src/images/bigmario_right.png").getImage();
+                    gf.mario.width = gf.mario.img.getWidth(null);
+                    gf.mario.height = gf.mario.img.getHeight(null);
+                    gf.mario.x = gf.mario.x - gf.mario.width;
+                    gf.mario.y = gf.mario.y - gf.mario.height;
+
+
+                }
                 return true;
             }
         }

@@ -49,12 +49,22 @@ public class KeyListener extends KeyAdapter{
             //向右走
             case KeyEvent.VK_RIGHT:
                 gf.mario.right = false;
-                gf.mario.img=new ImageIcon("src/images/mario_right.png").getImage();
+                if (gf.mario.status == gf.mario.STATUS_SMALL) {
+                    gf.mario.img=new ImageIcon("src/images/mario_right.png").getImage();
+                } else if (gf.mario.status == gf.mario.STATUS_BIG) {
+                    gf.mario.img=new ImageIcon("src/images/bigmario_right.png").getImage();
+                }
+
                 break;
             //向左走
             case KeyEvent.VK_LEFT:
                 gf.mario.left = false;
-                gf.mario.img=new ImageIcon("src/images/mario_left.png").getImage();
+                if (gf.mario.status == gf.mario.STATUS_SMALL) {
+                    gf.mario.img=new ImageIcon("src/images/mario_left.png").getImage();
+                } else if (gf.mario.status == gf.mario.STATUS_BIG) {
+                    gf.mario.img=new ImageIcon("src/images/bigmario_left.png").getImage();
+                }
+
                 break;
 
 
@@ -63,10 +73,19 @@ public class KeyListener extends KeyAdapter{
             case KeyEvent.VK_SPACE:
                 gf.mario.up = false;
                 if (gf.mario.actionLeft) {
-                    gf.mario.img =  new ImageIcon("src/images/mario_left.png").getImage();
+                    if (gf.mario.status == gf.mario.STATUS_SMALL) {
+                        gf.mario.img =  new ImageIcon("src/images/mario_left.png").getImage();
+                    } else if (gf.mario.status == gf.mario.STATUS_BIG) {
+                        gf.mario.img= new ImageIcon("src/images/bigmario_left.png").getImage();
+                    }
+
                 }
                 if (gf.mario.actionRight) {
-                    gf.mario.img = new ImageIcon("src/images/mario_right.png").getImage();
+                    if (gf.mario.status == gf.mario.STATUS_SMALL) {
+                        gf.mario.img = new ImageIcon("src/images/mario_right.png").getImage();
+                    } else if (gf.mario.status == gf.mario.STATUS_BIG) {
+                        gf.mario.img=new ImageIcon("src/images/bigmario_right.png").getImage();
+                    }
                 }
                 break;
         }
