@@ -9,10 +9,10 @@ import javax.swing.ImageIcon;
 //键盘按下监听类
 public class KeyListener extends KeyAdapter{
 
-    public GameFrame gf;
+    private GameFrame gf;
     public boolean jumpFlag=true;
 
-    public KeyListener(GameFrame gf) {
+    KeyListener(GameFrame gf) {
         this.gf=gf;
     }
 

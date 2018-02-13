@@ -1,7 +1,7 @@
 package com.Xieyuchen.Util;
 
-import com.Xieyuchen.mario.GameFrame;
-import com.Xieyuchen.mario.Test;
+
+
 
 import java.awt.*;
 import java.io.*;
@@ -9,7 +9,7 @@ import java.io.*;
 public class UI {
     public  Font getSelfDefinedFont(String filename, int size)
     {
-        Font font = null;
+        Font font;
         //字体文件在conf下面
         String filepath ="/C:/Users/46514/IdeaProjects/SuperMario/src/" + filename;
         File file = new File(filepath);
@@ -19,15 +19,7 @@ public class UI {
             BufferedInputStream fb = new BufferedInputStream(fi);
             font = Font.createFont(Font.TRUETYPE_FONT, fb);
         }
-        catch (FontFormatException e)
-        {
-            return null;
-        }
-        catch (FileNotFoundException e)
-        {
-            return null;
-        }
-        catch (IOException e)
+        catch (FontFormatException | IOException e)
         {
             return null;
         }

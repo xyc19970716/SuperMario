@@ -1,8 +1,7 @@
 package com.Xieyuchen.enery;
 
-import com.Xieyuchen.mario.GameFrame;
 
-import javax.swing.*;
+
 import java.awt.*;
 
 public class Mushroom extends Enery {

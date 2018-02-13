@@ -47,41 +47,41 @@ public class GameFrame extends JFrame{
     //构造函数里面初始化背景图片和马里奥对象
     public GameFrame() throws Exception {
         physics = new Physics(this);
-        mario = new Mario(this);
-        mario.start();
+        mario = new Mario(0+16*5,224 - 16 - 2* 16-1-1,
+                new ImageIcon("src/images/mario_right.png").getImage(),
+                "Mario",this);
+        new Thread(mario).start();
         Map mp= new Map();
         bg = new BackgroundImage();
         ui = new UI();
         this.physics.Gravity();
         //窗体重绘线程
-        new Thread(){
-            public void run(){
-                while(true){
-                    //重绘窗体
-                    System.out.println("draw");
-                    repaint();
+        new Thread(() -> {
+            while(true){
+                //重绘窗体
+                System.out.println("draw");
+                repaint();
 
-                    for (int i = 0; i <eneryList.size(); i++) {
-                            Enery e =eneryList.get(i);
-                            if (e.name.equals("coin")) {
-                                //r.delay(64);
-                                e.img = new ImageIcon("src/images/coin" + actionEneryTime / 1200 % 3 + ".png").getImage();
-                                actionEneryTime+=flashTime;
+                for (int i = 0; i <eneryList.size(); i++) {
+                        Enery e =eneryList.get(i);
+                        if (e.name.equals("coin")) {
+                            //r.delay(64);
+                            e.img = new ImageIcon("src/images/coin" + actionEneryTime / 1200 % 3 + ".png").getImage();
+                            actionEneryTime+=flashTime;
 
-                            }
-                    }
+                        }
+                }
 
 
-                    //检查子弹是否出界
-                    checkBoom();
-                    try {
-                        Thread.sleep(flashTime);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                //检查子弹是否出界
+                checkBoom();
+                try {
+                    Thread.sleep(flashTime);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
-        }.start();
+        }).start();
 
         map=mp.readMap();
         //读取地图，并配置地图
@@ -174,7 +174,7 @@ public class GameFrame extends JFrame{
 
 
     }
-    public int actionEneryTime;
+    private int actionEneryTime;
 
     Robot r= new Robot();
 
@@ -196,11 +196,10 @@ public class GameFrame extends JFrame{
         }
 
         //画子弹
-        for (int i = 0; i < boomList.size(); i++) {
-            Boom b =boomList.get(i);
-            Color c =big.getColor();
+        for (Boom b : boomList) {
+            Color c = big.getColor();
             big.setColor(Color.red);
-            big.fillOval(b.x+= b.speed, b.y+=bspeed, b.width, b.width);
+            big.fillOval(b.x += b.speed, b.y += bspeed, b.width, b.width);
             big.setColor(c);
         }
 
@@ -218,7 +217,7 @@ public class GameFrame extends JFrame{
     }
 
     //检查子弹是否出界，出界则从容器中移除，不移除的话，内存会泄漏
-    public void checkBoom(){
+    private void checkBoom(){
         for (int i = 0; i < boomList.size(); i++) {
             Boom b = boomList.get(i);
             if(b.x<0 || b.x>800){

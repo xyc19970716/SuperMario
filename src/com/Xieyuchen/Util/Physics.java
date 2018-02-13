@@ -5,6 +5,7 @@ import com.Xieyuchen.enery.Enery;
 import com.Xieyuchen.enery.Mushroom;
 import com.Xieyuchen.mario.Dead;
 import com.Xieyuchen.mario.GameFrame;
+import com.Xieyuchen.mario.Mario;
 import com.Xieyuchen.mario.Test;
 
 import javax.swing.*;
@@ -19,19 +20,21 @@ public class Physics {
 
     }
     //检测碰撞
-    public boolean hit(String dir){
-        Rectangle myrect = new Rectangle(gf.mario.x,gf.mario.y,gf.mario.width,gf.mario.height);
+    public boolean hit(Mario sprite,String dir){
+        Rectangle myrect = new Rectangle(sprite.x,sprite.y,sprite.width,sprite.height);
         Rectangle rect =null;
         boolean isColliding = false;
-
+        System.out.println("hit!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         for (int i = 0; i < gf.eneryList.size(); i++) {
             Enery enery = gf.eneryList.get(i);
-            if (gf.mario.eatMushroom && enery.name.equals("CreateBigMushroom") && gf.mario.eatId == enery.Id) {//找到吃掉的蘑菇删除它
+            if (sprite.eatMushroom && enery.name.equals("CreateBigMushroom") && sprite.eatId == enery.Id) {//找到吃掉的蘑菇删除它
                 gf.eneryList.remove(enery);
-                gf.mario.eatMushroom = false;
+                sprite.eatMushroom = false;
             }
-            if(dir.equals("Left")){
-                rect = new Rectangle(enery.x+2,enery.y,enery.width,enery.height);//x+2
+            switch (dir) {
+                case "Left":
+                    rect = new Rectangle(enery.x + 2, enery.y, enery.width, enery.height);//x+2
+
                 /*if (this.y > enery.y + enery.height ||enery.y > this.y + this.height
                         || this.x > enery.x + enery.width || enery.x > this.x + this.width) {
                      isColliding = false;
@@ -39,23 +42,27 @@ public class Physics {
                     isColliding = true;
                 }*/
 
-            }
-            else if(dir.equals("Right")){
-                rect = new Rectangle(enery.x-1,enery.y,enery.width,enery.height);//x-1
-
-            }
-
-            else if(dir.equals("Up")){
-                rect = new Rectangle(enery.x,enery.y+1,enery.width,enery.height);//y+1
+                    break;
+                case "Right":
+                    rect = new Rectangle(enery.x - 1, enery.y, enery.width, enery.height);//x-1
 
 
-            }else if(dir.equals("Down")){
-                rect = new Rectangle(enery.x,enery.y-2,enery.width,enery.height);//y-2
+                    break;
+                case "Up":
+                    rect = new Rectangle(enery.x, enery.y + 1, enery.width, enery.height);//y+1
 
+
+                    break;
+                case "Down":
+                    rect = new Rectangle(enery.x, enery.y - 2, enery.width, enery.height);//y-2
+
+
+                    break;
             }
             //碰撞检测
+            assert rect != null;
             if( myrect.intersects(rect)){
-                if (enery.name=="coin"&& dir.equals("Up")) {  //创建蘑菇
+                if (enery.name.equals("coin") && dir.equals("Up")) {  //创建蘑菇
                     System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaMushroom");
                     Mushroom createBigMushroom = new Mushroom(enery.x, enery.y, new ImageIcon("src/images/createBigMushroom.png").getImage(), "CreateBigMushroom");
                     createBigMushroom.x = enery.x;
@@ -68,19 +75,19 @@ public class Physics {
                     gf.eneryList.add(createBigMushroom);
 
                 }
-                if (enery.name=="CreateBigMushroom" && (dir.equals("Left") ||dir.equals("Right") ||dir.equals("Down"))) { //吃蘑菇变大
-                    gf.mario.eatMushroom = true;
-                    gf.mario.eatId = enery.Id;
-                    gf.mario.status=gf.mario.STATUS_BIG;
-                    gf.mario.x = gf.mario.x + gf.mario.width;
-                    gf.mario.y = gf.mario.y + gf.mario.height;
-                    gf.mario.img = new ImageIcon("src/images/bigmario_right.png").getImage();
-                    gf.mario.width = gf.mario.img.getWidth(null);
-                    gf.mario.height = gf.mario.img.getHeight(null);
-                    gf.mario.x = gf.mario.x - gf.mario.width;
-                    gf.mario.y = gf.mario.y - gf.mario.height;
-                    gf.mario.xspeed = 8;
-                    gf.mario.yspeed = 8;
+                if (enery.name.equals("CreateBigMushroom") && (dir.equals("Left") ||dir.equals("Right") ||dir.equals("Down"))) { //吃蘑菇变大
+                    sprite.eatMushroom = true;
+                    sprite.eatId = enery.Id;
+                    sprite.status=sprite.STATUS_BIG;
+                    sprite.x = sprite.x + sprite.width;
+                    sprite.y = sprite.y + sprite.height;
+                    sprite.img = new ImageIcon("src/images/bigmario_right.png").getImage();
+                    sprite.width = sprite.img.getWidth(null);
+                    sprite.height = sprite.img.getHeight(null);
+                    sprite.x = sprite.x - sprite.width;
+                    sprite.y = sprite.y - sprite.height;
+                    sprite.xspeed = 8;
+                    sprite.yspeed = 8;
 
                 }
                 return true;
@@ -111,7 +118,7 @@ public class Physics {
                         break;
                     }
 
-                    if(hit(gf.mario.Dir_Down)){
+                    if(hit(gf.mario,gf.mario.Dir_Down)){
                         isGravity=false;
                         break;
                     }
@@ -120,7 +127,7 @@ public class Physics {
 
 
                     }*/
-                    else if (/*y<=224*/!hit(gf.mario.Dir_Down)){
+                    else if (/*y<=224*/!hit(gf.mario,gf.mario.Dir_Down)){
                         /*if (!hit(Dir_Down)) {*/
                         isGravity=true;
                         gf.mario.y+=gf.mario.yspeed;
@@ -129,7 +136,7 @@ public class Physics {
                     }
                     if (gf.mario.y>224) {
                         Dead dead = new Dead(this.gf);
-                        gf.mario.stop();
+                        //new Thread(mario).stop();
                         dead.showDead(gf.mario.x,gf.mario.y);
                     }
 

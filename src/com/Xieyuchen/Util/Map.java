@@ -7,9 +7,7 @@ import java.util.ArrayList;
 public class Map {
 
     //数据容器
-    public ArrayList<String> list = new ArrayList<String>();
-
-    public int [][] map=null;
+    private ArrayList<String> list = new ArrayList<>();
 
     public  int[][] readMap() throws Exception {
         // 构造文件输入流
@@ -40,7 +38,7 @@ public class Map {
         }
 
 
-        map = new int [row][cloum];
+        int[][] map = new int[row][cloum];
 
         //将读到的字符创转换成整数，并赋值给二位数组map
         for (int i = 0; i < list.size(); i++) {
