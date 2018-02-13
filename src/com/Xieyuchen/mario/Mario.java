@@ -32,7 +32,9 @@ public class Mario extends Thread{
     public int STATUS_DEAD = 0;
     public int STATUS_SMALL = 1;
     public int STATUS_BIG = 2;
-
+    //马里奥移动速度
+    public int moveSpeed = 16 * 2;
+    public boolean speedFlag = false;
     public boolean eatMushroom = false;//
 
     public int eatId;//蘑菇
@@ -46,30 +48,30 @@ public class Mario extends Thread{
 
     public Mario (GameFrame gf) {
         this.gf=gf;
-        gf.physics.Gravity();
+        //gf.physics.Gravity();
     }
 
     public void Action() {
         if (!gf.physics.isGravity) {
             if (right) {
                 if (this.status == STATUS_SMALL) {
-                    this.img = new ImageIcon("src/images/mario_right" + actionTime % 3 + ".png").getImage();
+                    this.img = new ImageIcon("src/images/mario_right" + actionTime /50 % 3 + ".png").getImage();//50ms
 
                 } else if (this.status == STATUS_BIG) {
-                    this.img = new ImageIcon("src/images/bigmario_right" + actionTime % 3 + ".png").getImage();
+                    this.img = new ImageIcon("src/images/bigmario_right" + actionTime /50 % 3 + ".png").getImage();
                 }
-                actionTime++;
+                actionTime+=gf.flashTime;
                 actionRight = true;
                 actionLeft = false;
             }
             if (left) {
                 if (this.status == STATUS_SMALL) {
-                    this.img =  new ImageIcon("src/images/mario_left" + actionTime % 3 + ".png").getImage();
+                    this.img =  new ImageIcon("src/images/mario_left" + actionTime /50 % 3 + ".png").getImage();
 
                 } else if (this.status == STATUS_BIG) {
-                    this.img = new ImageIcon("src/images/bigmario_left" + actionTime % 3 + ".png").getImage();
+                    this.img = new ImageIcon("src/images/bigmario_left" + actionTime /50 % 3 + ".png").getImage();
                 }
-                actionTime++;
+                actionTime+=gf.flashTime;
                 actionLeft = true;
                 actionRight = false;
             }
@@ -112,7 +114,8 @@ public class Mario extends Thread{
                 } else if (this.status == STATUS_BIG) {
                     this.img= new ImageIcon("src/images/bigmario_jump_right.png").getImage();
                 }
-                actionRight = false;
+                actionLeft = false;
+                actionRight = true;
             }
             if (up && left) {
                 if (this.status == STATUS_SMALL) {
@@ -122,6 +125,29 @@ public class Mario extends Thread{
                     this.img= new ImageIcon("src/images/bigmario_jump_left.png").getImage();
                 }
                 actionLeft = false;
+                actionRight = true;
+            }
+            if (down) {
+
+
+                if (actionLeft) {
+                    if (this.status == STATUS_BIG) {
+                        this.img= new ImageIcon("src/images/bigmario_down_left.png").getImage();
+                    }
+                }
+                if (actionRight) {
+                    if (this.status == STATUS_BIG) {
+                        this.img= new ImageIcon("src/images/bigmario_down_right.png").getImage();
+                    }
+                }
+                if (!actionDown) {
+                    if (this.status == STATUS_BIG) {
+                        gf.mario.y+=gf.mario.height;
+                        gf.mario.height = gf.mario.img.getHeight(null);
+                        gf.mario.y-=gf.mario.height;
+                        actionDown = true;
+                    }
+                }
 
             }
             // if (!up && !right && !left) {
@@ -226,7 +252,7 @@ public class Mario extends Thread{
 
             Action();
             try {
-                this.sleep(40);
+                this.sleep(moveSpeed);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

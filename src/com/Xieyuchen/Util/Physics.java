@@ -16,6 +16,7 @@ public class Physics {
     private GameFrame gf;
     public Physics(GameFrame gf) {
         this.gf = gf;
+
     }
     //检测碰撞
     public boolean hit(String dir){

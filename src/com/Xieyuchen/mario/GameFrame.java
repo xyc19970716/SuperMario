@@ -18,6 +18,7 @@ import com.Xieyuchen.Util.Map;
 
 public class GameFrame extends JFrame{
 
+    public int flashTime=16;
     public Mario mario;
     public Enery pipe_tou, coin,brick,pipe_sheng;
     //背景图片
@@ -51,7 +52,7 @@ public class GameFrame extends JFrame{
         Map mp= new Map();
         bg = new BackgroundImage();
         ui = new UI();
-
+        this.physics.Gravity();
         //窗体重绘线程
         new Thread(){
             public void run(){
@@ -59,10 +60,22 @@ public class GameFrame extends JFrame{
                     //重绘窗体
                     System.out.println("draw");
                     repaint();
+
+                    for (int i = 0; i <eneryList.size(); i++) {
+                            Enery e =eneryList.get(i);
+                            if (e.name.equals("coin")) {
+                                //r.delay(64);
+                                e.img = new ImageIcon("src/images/coin" + actionEneryTime / 1200 % 3 + ".png").getImage();
+                                actionEneryTime+=flashTime;
+
+                            }
+                    }
+
+
                     //检查子弹是否出界
                     checkBoom();
                     try {
-                        Thread.sleep(16);
+                        Thread.sleep(flashTime);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -154,25 +167,11 @@ public class GameFrame extends JFrame{
         KeyListener kl = new KeyListener(this);
         this.addKeyListener(kl);
 
-
+        //physics = new Physics(this);
 
         startTime= (int) (new Date().getTime() / 1000);
 
-        while (true) {
-            for (int i = 0; i <eneryList.size(); i++) {
-                Enery e =eneryList.get(i);
-                if (e.name.equals("coin")) {
-                    r.delay(64);
-                    e.img = new ImageIcon("src/images/coin" + actionEneryTime  + ".png").getImage();
-                    actionEneryTime++;
-                    if (actionEneryTime == 3) {
-                        actionEneryTime = 0;
-                    }
-                }
-            }
 
-
-        }
 
     }
     public int actionEneryTime;
