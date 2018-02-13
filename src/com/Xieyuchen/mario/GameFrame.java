@@ -3,6 +3,7 @@ package com.Xieyuchen.mario;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.swing.*;
 
@@ -26,6 +27,10 @@ public class GameFrame extends JFrame{
     public Font font;
     public  int GAME_FRAME_WIDTH = 255;
     public  int GAME_FRAME_HEIGHT = 224;
+
+    public int startTime;
+    public int currentTime;
+    public int period;
     //容器装敌人
     public ArrayList<Enery> eneryList = new ArrayList<Enery>();
 
@@ -46,7 +51,7 @@ public class GameFrame extends JFrame{
         Map mp= new Map();
         bg = new BackgroundImage();
         ui = new UI();
-        font = ui.getSelfDefinedFont("PrStart.woff.ttf");
+
         //窗体重绘线程
         new Thread(){
             public void run(){
@@ -57,7 +62,7 @@ public class GameFrame extends JFrame{
                     //检查子弹是否出界
                     checkBoom();
                     try {
-                        Thread.sleep(40);
+                        Thread.sleep(16);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -131,24 +136,33 @@ public class GameFrame extends JFrame{
 
     public void initFrame(){
         //设置窗体相关属性
+
         this.setSize(GAME_FRAME_WIDTH,GAME_FRAME_HEIGHT);
         this.setTitle("山寨版超级玛丽");
+
+        this.setUndecorated(true);
+
         this.setResizable(false);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setVisible(true);
 
 
+        font = ui.getSelfDefinedFont("PrStart.woff.ttf", 8);
 
         //该窗体添加键盘监听
         KeyListener kl = new KeyListener(this);
         this.addKeyListener(kl);
 
+
+
+        startTime= (int) (new Date().getTime() / 1000);
+
         while (true) {
             for (int i = 0; i <eneryList.size(); i++) {
                 Enery e =eneryList.get(i);
                 if (e.name.equals("coin")) {
-                    r.delay(400);
+                    r.delay(64);
                     e.img = new ImageIcon("src/images/coin" + actionEneryTime  + ".png").getImage();
                     actionEneryTime++;
                     if (actionEneryTime == 3) {
@@ -159,6 +173,7 @@ public class GameFrame extends JFrame{
 
 
         }
+
     }
     public int actionEneryTime;
 
@@ -193,7 +208,10 @@ public class GameFrame extends JFrame{
         //画人物
         big.drawImage(mario.img, mario.x, mario.y, mario.width, mario.height,null);
 
-        ui.printInfo(big, font,"world",mario.x,mario.y,Color.red);
+        currentTime = (int) (new Date().getTime() / 1000);
+        period = 400- (currentTime-startTime);//time
+
+        ui.printInfo(big, font,"MARIO",Color.white, String.valueOf(period));
         g.drawImage(bi,0,0,null);
 
 

@@ -37,6 +37,10 @@ public class KeyListener extends KeyAdapter{
                 gf.mario.up=true;
                 break;
 
+            //按esc退出
+            case KeyEvent.VK_ESCAPE:
+                System.exit(0);
+                break;
         }
     }
 
