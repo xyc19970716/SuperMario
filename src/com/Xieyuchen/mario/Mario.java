@@ -46,11 +46,11 @@ public class Mario extends Thread{
 
     public Mario (GameFrame gf) {
         this.gf=gf;
-        this.Gravity();
+        gf.physics.Gravity();
     }
 
     public void Action() {
-        if (!isGravity) {
+        if (!gf.physics.isGravity) {
             if (right) {
                 if (this.status == STATUS_SMALL) {
                     this.img = new ImageIcon("src/images/mario_right" + actionTime % 3 + ".png").getImage();
@@ -156,7 +156,7 @@ public class Mario extends Thread{
                     this.x+=1;
                    // this.img=new ImageIcon("src/images/mario_run0.png").getImage();
                 }*/
-                if (!hit(Dir_Left)) {
+                if (!gf.physics.hit(Dir_Left)) {
                     if(this.x>=0){
                         this.x-=this.xspeed;
                         //this.img=new ImageIcon("src/images/mario_run0.png").getImage();
@@ -179,7 +179,7 @@ public class Mario extends Thread{
                     this.x-=1;
                     //this.img=new ImageIcon("src/images/mario_run0.png").getImage();
                 }*/
-                if (!hit(Dir_Right)) {
+                if (!gf.physics.hit(Dir_Right)) {
                     //任人物向右移动
                     if(this.x<gf.GAME_FRAME_WIDTH / 2){
                         this.x+=this.xspeed;
@@ -209,7 +209,7 @@ public class Mario extends Thread{
             //向上跳
             if(up){
 
-                if(jumpFlag && !isGravity){ //true && !false (start)
+                if(jumpFlag && !gf.physics.isGravity){ //true && !false (start)
 
                     jumpFlag=false;
                    new Thread(() -> {
@@ -246,7 +246,7 @@ public class Mario extends Thread{
         for (int i = 0; i < Length; i++) {
             gf.mario.y-=this.yspeed;
             jumpHeigh++;
-            if(hit(Dir_Up)/*||hit(Dir_Left) || hit(Dir_Right)||hit(Dir_Up)&&hit(Dir_Left)||hit(Dir_Up)&& hit(Dir_Right)*/){
+            if(gf.physics.hit(Dir_Up)/*||hit(Dir_Left) || hit(Dir_Right)||hit(Dir_Up)&&hit(Dir_Left)||hit(Dir_Up)&& hit(Dir_Right)*/){
 
 
                 break;
@@ -259,7 +259,7 @@ public class Mario extends Thread{
         }
         for (int i = 0; i <jumpHeigh; i++) {
             gf.mario.y+=this.yspeed;
-            if(hit(Dir_Down)){
+            if(gf.physics.hit(Dir_Down)){
                 this.yspeed=0;
 
             }
@@ -278,131 +278,7 @@ public class Mario extends Thread{
 
     }
 
-    //检测碰撞
-    public boolean hit(String dir){
-        Rectangle myrect = new Rectangle(this.x,this.y,this.width,this.height);
-        Rectangle rect =null;
-        boolean isColliding = false;
-        for (int i = 0; i < gf.eneryList.size(); i++) {
-            Enery enery = gf.eneryList.get(i);
-            if (eatMushroom && enery.name.equals("CreateBigMushroom") && eatId == enery.Id) {//找到吃掉的蘑菇删除它
-                gf.eneryList.remove(enery);
-                eatMushroom = false;
-            }
-            if(dir.equals("Left")){
-                rect = new Rectangle(enery.x+2,enery.y,enery.width,enery.height);//x+2
-                /*if (this.y > enery.y + enery.height ||enery.y > this.y + this.height
-                        || this.x > enery.x + enery.width || enery.x > this.x + this.width) {
-                     isColliding = false;
-                } else {
-                    isColliding = true;
-                }*/
 
-            }
-            else if(dir.equals("Right")){
-                rect = new Rectangle(enery.x-1,enery.y,enery.width,enery.height);//x-1
-
-            }
-
-            else if(dir.equals("Up")){
-                rect = new Rectangle(enery.x,enery.y+1,enery.width,enery.height);//y+1
-
-
-            }else if(dir.equals("Down")){
-                rect = new Rectangle(enery.x,enery.y-2,enery.width,enery.height);//y-2
-
-            }
-            //碰撞检测
-            if( myrect.intersects(rect)){
-                if (enery.name=="coin"&& dir.equals("Up")) {  //创建蘑菇
-                    System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaMushroom");
-                    Mushroom createBigMushroom = new Mushroom(enery.x, enery.y, new ImageIcon("src/images/createBigMushroom.png").getImage(), "CreateBigMushroom");
-                    createBigMushroom.x = enery.x;
-                    createBigMushroom.y = enery.y - createBigMushroom.height;
-                    createBigMushroom.Id = gf.eneryList.size();
-                    Enery coin = new Coin(enery.x,enery.y,  new ImageIcon("src/images/withoutcoin.png").getImage(),"without coin");//顶过就没了
-                    coin.Id = enery.Id;
-                    gf.eneryList.remove(enery);
-                    gf.eneryList.add(coin);
-                    gf.eneryList.add(createBigMushroom);
-
-                }
-                if (enery.name=="CreateBigMushroom" && (dir.equals("Left") ||dir.equals("Right") ||dir.equals("Down"))) { //吃蘑菇变大
-                    eatMushroom = true;
-                    eatId = enery.Id;
-                    gf.mario.status=STATUS_BIG;
-                    gf.mario.x = gf.mario.x + gf.mario.width;
-                    gf.mario.y = gf.mario.y + gf.mario.height;
-                    gf.mario.img = new ImageIcon("src/images/bigmario_right.png").getImage();
-                    gf.mario.width = gf.mario.img.getWidth(null);
-                    gf.mario.height = gf.mario.img.getHeight(null);
-                    gf.mario.x = gf.mario.x - gf.mario.width;
-                    gf.mario.y = gf.mario.y - gf.mario.height;
-                    gf.mario.xspeed = 8;
-                    gf.mario.yspeed = 8;
-
-                }
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    //检查是否贴地
-    public boolean isGravity=false;//不会掉
-
-    public void Gravity(){
-        new Thread(() -> {
-
-            while(true){
-                try {
-                    sleep(10);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-                if(!jumpFlag){
-
-                }
-                System.out.println("this is gravity thread.");
-                while(true){
-                   if(!jumpFlag){
-                        break;
-                    }
-
-                   if(hit(Dir_Down)){
-                       isGravity=false;
-                       break;
-                    }
-
-                    /*if(y>=224){
-
-
-                    }*/
-                    else if (/*y<=224*/!hit(Dir_Down)){
-                        /*if (!hit(Dir_Down)) {*/
-                            isGravity=true;
-                            y+=yspeed;
-                       // }
-
-                    }
-                    if (y>224) {
-                        Dead dead = new Dead(this.gf);
-                        gf.mario.stop();
-                        dead.showDead(gf.mario.x,gf.mario.y);
-                    }
-
-                    try {
-                        sleep(10);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }).start();
-
-    }
 
     //添加子弹
     public void addBoom() {

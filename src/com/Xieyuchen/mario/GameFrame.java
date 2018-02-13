@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 
+import com.Xieyuchen.Util.Physics;
 import com.Xieyuchen.enery.Brick;
 import com.Xieyuchen.enery.Coin;
 import com.Xieyuchen.enery.Enery;
@@ -19,6 +20,7 @@ public class GameFrame extends JFrame{
     public Enery pipe_tou, coin,brick,pipe_sheng;
     //背景图片
     public BackgroundImage bg ;
+    public Physics physics;
     public  int GAME_FRAME_WIDTH = 255;
     public  int GAME_FRAME_HEIGHT = 224;
     //容器装敌人
@@ -35,11 +37,12 @@ public class GameFrame extends JFrame{
 
     //构造函数里面初始化背景图片和马里奥对象
     public GameFrame() throws Exception {
-
+        physics = new Physics(this);
         mario = new Mario(this);
         mario.start();
         Map mp= new Map();
         bg = new BackgroundImage();
+
 
         //窗体重绘线程
         new Thread(){
