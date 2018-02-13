@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import javax.swing.*;
 
 import com.Xieyuchen.Util.Physics;
+import com.Xieyuchen.Util.UI;
 import com.Xieyuchen.enery.Brick;
 import com.Xieyuchen.enery.Coin;
 import com.Xieyuchen.enery.Enery;
@@ -21,6 +22,8 @@ public class GameFrame extends JFrame{
     //背景图片
     public BackgroundImage bg ;
     public Physics physics;
+    public UI ui;
+    public Font font;
     public  int GAME_FRAME_WIDTH = 255;
     public  int GAME_FRAME_HEIGHT = 224;
     //容器装敌人
@@ -42,8 +45,8 @@ public class GameFrame extends JFrame{
         mario.start();
         Map mp= new Map();
         bg = new BackgroundImage();
-
-
+        ui = new UI();
+        font = ui.getSelfDefinedFont("PrStart.woff.ttf");
         //窗体重绘线程
         new Thread(){
             public void run(){
@@ -135,6 +138,8 @@ public class GameFrame extends JFrame{
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setVisible(true);
 
+
+
         //该窗体添加键盘监听
         KeyListener kl = new KeyListener(this);
         this.addKeyListener(kl);
@@ -187,6 +192,8 @@ public class GameFrame extends JFrame{
 
         //画人物
         big.drawImage(mario.img, mario.x, mario.y, mario.width, mario.height,null);
+
+        ui.printInfo(big, font,"world",mario.x,mario.y,Color.red);
         g.drawImage(bi,0,0,null);
 
 

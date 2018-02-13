@@ -5,6 +5,7 @@ import com.Xieyuchen.enery.Enery;
 import com.Xieyuchen.enery.Mushroom;
 import com.Xieyuchen.mario.Dead;
 import com.Xieyuchen.mario.GameFrame;
+import com.Xieyuchen.mario.Test;
 
 import javax.swing.*;
 import java.awt.*;
@@ -99,7 +100,7 @@ public class Physics {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-
+                System.out.println(Test.class.getResource("/").getFile().replaceAll("%20", " ") + "../src/"+"PrStart.woff.ttf");
                /* if(!gf.mario.jumpFlag){
 
                 }*/
