@@ -151,52 +151,57 @@ public class Mario extends Thread{
             //向左走
             if(left){
                 //碰撞到了
-                if(hit(Dir_Left)){
+                /*if(hit(Dir_Left)){
                     this.xspeed=0;
-
+                    this.x+=1;
                    // this.img=new ImageIcon("src/images/mario_run0.png").getImage();
+                }*/
+                if (!hit(Dir_Left)) {
+                    if(this.x>=0){
+                        this.x-=this.xspeed;
+                        //this.img=new ImageIcon("src/images/mario_run0.png").getImage();
+                    }
+
+                    if (this.status == STATUS_BIG) {
+                        this.xspeed=4;
+                    }
+                    this.xspeed = 2;
                 }
 
-                if(this.x>=0){
-                    this.x-=this.xspeed;
-                    //this.img=new ImageIcon("src/images/mario_run0.png").getImage();
-                }
-
-                if (this.status == STATUS_BIG) {
-                    this.xspeed=4;
-                }
-                this.xspeed = 2;
 
             }
 
             //向右走
             if(right){
 
-                if(hit(Dir_Right)){
+                /*if(hit(Dir_Right)){
                     this.xspeed=0;
-
+                    this.x-=1;
                     //this.img=new ImageIcon("src/images/mario_run0.png").getImage();
-                }
-                //任人物向右移动
-                if(this.x<gf.GAME_FRAME_WIDTH / 2){
-                    this.x+=this.xspeed;
-                    //this.img=new ImageIcon("src/images/mario_run0.png").getImage();
-                }
-
-                if(this.x>=gf.GAME_FRAME_WIDTH / 2){
-                    //背景向左移动
-                    gf.bg.x-=this.xspeed;
-                    //障碍物项左移动
-                    for (int i = 0; i <gf.eneryList.size(); i++) {
-                        Enery enery = gf.eneryList.get(i);
-                        enery.x-=this.xspeed;
+                }*/
+                if (!hit(Dir_Right)) {
+                    //任人物向右移动
+                    if(this.x<gf.GAME_FRAME_WIDTH / 2){
+                        this.x+=this.xspeed;
+                        //this.img=new ImageIcon("src/images/mario_run0.png").getImage();
                     }
-                    //this.img=new ImageIcon("src/images/mario_run0.png").getImage();
+
+                    if(this.x>=gf.GAME_FRAME_WIDTH / 2){
+                        //背景向左移动
+                        gf.bg.x-=this.xspeed;
+                        //障碍物项左移动
+                        for (int i = 0; i <gf.eneryList.size(); i++) {
+                            Enery enery = gf.eneryList.get(i);
+                            enery.x-=this.xspeed;
+                        }
+                        //this.img=new ImageIcon("src/images/mario_run0.png").getImage();
+                    }
+                    if (this.status == STATUS_BIG) {
+                        this.xspeed=4;
+                    }
+                    this.xspeed = 2;
                 }
-                if (this.status == STATUS_BIG) {
-                    this.xspeed=4;
-                }
-                this.xspeed = 2;
+
 
 
             }
@@ -256,6 +261,7 @@ public class Mario extends Thread{
             gf.mario.y+=this.yspeed;
             if(hit(Dir_Down)){
                 this.yspeed=0;
+
             }
             try {
                 Thread.sleep(8);
@@ -374,11 +380,11 @@ public class Mario extends Thread{
 
 
                     }*/
-                    else if (y<=224){
-                        if (!hit(Dir_Down)) {
+                    else if (/*y<=224*/!hit(Dir_Down)){
+                        /*if (!hit(Dir_Down)) {*/
                             isGravity=true;
                             y+=yspeed;
-                        }
+                       // }
 
                     }
                     if (y>224) {
