@@ -207,7 +207,7 @@ public class Mario extends Enery implements Runnable {
 
                     if (this.x >= gf.GAME_FRAME_WIDTH / 2) {
                         //背景向左移动
-                        gf.bg.x -= this.xspeed;
+                        gf.movs += this.xspeed;
                         //障碍物项左移动
                         for (int i = 0; i < gf.eneryList.size(); i++) {
                             Enery enery = gf.eneryList.get(i);

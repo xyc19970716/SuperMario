@@ -20,7 +20,7 @@ public class GameFrame extends JFrame{
 
     public int flashTime=16;
     public Mario mario;
-    public Enery pipe_tou, coin,brick,pipe_sheng;
+    public Enery pipe_tou, coin,brick,floor,pipe_sheng,stepFloor;
     //背景图片
     public BackgroundImage bg ;
     public Physics physics;
@@ -29,6 +29,7 @@ public class GameFrame extends JFrame{
     public  int GAME_FRAME_WIDTH = 255;
     public  int GAME_FRAME_HEIGHT = 224;
 
+    public int movs,bgspeed=1,headmovs;
     public int startTime;
     public int currentTime;
     public int period;
@@ -88,11 +89,11 @@ public class GameFrame extends JFrame{
 
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[0].length; j++) {
-                //读取到的是1，画砖头
+                //读取到的是1，画地砖
                 if(map[i][j]==1){
-                    brick = new Brick(j * 16,i * 16, new ImageIcon("src/images/brick.png").getImage(),"brick");
-                    brick.Id = eneryList.size()-1;
-                    eneryList.add(brick);
+                    floor = new Brick(j * 16,i * 16, new ImageIcon("src/images/floor.png").getImage(),"floor");
+                    floor.Id = eneryList.size()-1;
+                    eneryList.add(floor);
                 }
                 //读到2画金币
                 if(map[i][j]==2){
@@ -115,6 +116,18 @@ public class GameFrame extends JFrame{
                         pipe_sheng.Id = eneryList.size()-1;
                         eneryList.add(pipe_sheng);
                     }
+                }
+                //读到4画砖头
+                if (map[i][j] == 4) {
+                    brick = new Brick(j * 16,i* 16,new ImageIcon("src/images/brick.png").getImage(),"brick");
+                    brick.Id = eneryList.size()-1;
+                    eneryList.add(brick);
+                }
+                //读到5画台阶
+                if (map[i][j] == 5) {
+                    stepFloor = new Brick( j *16,i*16,new ImageIcon("src/images/stepfloor.png").getImage(),"stepfloor");
+                    stepFloor.Id = eneryList.size()-1;
+                    eneryList.add(stepFloor);
                 }
 
 
@@ -182,10 +195,26 @@ public class GameFrame extends JFrame{
         //利用双缓冲画背景图片和马里奥
         BufferedImage bi =(BufferedImage)this.createImage(this.getSize().width,this.getSize().height);
         Graphics big =bi.getGraphics();
-        big.drawImage(bg.img, bg.x, bg.y, null);
+        /*big.drawImage(bg.img, bg.x, bg.y, null);
         if (bg.x == -2*255) {
             bg.x = 0;
+        }*/
+        if (bg.width > GAME_FRAME_WIDTH + movs) {//背景图的宽大于窗口宽+移动的
+            big.drawImage(bg.img, 0, 0, GAME_FRAME_WIDTH, GAME_FRAME_HEIGHT,
+                    movs, 0, GAME_FRAME_WIDTH + movs, GAME_FRAME_HEIGHT, null);
+        }//窗口没跑出背景
+        if (bg.width <= GAME_FRAME_WIDTH + movs) {//背景图的宽小于窗口的宽+移动的
+            headmovs = GAME_FRAME_WIDTH + movs -bg.width;//窗口跑出的距离
+            big.drawImage(bg.img, 0, 0, GAME_FRAME_WIDTH - headmovs, GAME_FRAME_HEIGHT,
+                    movs, 0, bg.width, GAME_FRAME_HEIGHT, null);
+            big.drawImage(bg.img, GAME_FRAME_WIDTH - headmovs, 0 ,GAME_FRAME_WIDTH, GAME_FRAME_HEIGHT,
+                    0, 0, headmovs, GAME_FRAME_HEIGHT, null);
+            if (headmovs >= GAME_FRAME_WIDTH) { //窗口跑出的距离大于窗口宽度度
+                movs = headmovs - GAME_FRAME_WIDTH;//重新开始
+            }
         }
+        //movs +=bgspeed;
+
 
 
 
