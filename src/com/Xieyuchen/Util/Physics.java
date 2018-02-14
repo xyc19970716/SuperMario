@@ -86,8 +86,8 @@ public class Physics {
                     sprite.height = sprite.img.getHeight(null);
                     sprite.x = sprite.x - sprite.width;
                     sprite.y = sprite.y - sprite.height;
-                    sprite.xspeed = 4;//大
-                    sprite.yspeed = 10;//大
+                    sprite.xspeed = 6;//大
+                    sprite.yspeed = 20;//大
                     gf.eneryList.remove(enery);
                     sprite.eatMushroom = false;
 
@@ -131,8 +131,11 @@ public class Physics {
                     }*/
                     //else if (/*y<=224*/!hit(gf.mario,gf.mario.Dir_Down)){
                         /*if (!hit(Dir_Down)) {*/
-                        isGravity=true;
-                        gf.mario.y+=gf.mario.jumpHeigh;
+                        if (!hit(gf.mario,gf.mario.Dir_Down)) {
+                            isGravity=true;
+                            gf.mario.y+=gf.mario.jumpHeigh;
+                        }
+
                         // }
 
                     //}
@@ -140,6 +143,7 @@ public class Physics {
                         Dead dead = new Dead(this.gf);
                         //new Thread(mario).stop();
                         dead.showDead(gf.mario.x,gf.mario.y);
+                        gf.mario.status = 1;
                     }
 
                     try {

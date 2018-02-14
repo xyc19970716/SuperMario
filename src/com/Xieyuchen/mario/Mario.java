@@ -18,7 +18,7 @@ public class Mario extends Enery implements Runnable {
     //马里奥的坐标
     public int x = 0 + 16 * 5, y = 224 - 16 - 2 * 16 - 1 - 1;
     //马里奥的速度
-    public int xspeed = 2/*小的速度*/, yspeed = 10;//y速度 小
+    public int xspeed = 3/*小的速度*/, yspeed = 12;//y速度 小
     //马里奥的图片
     public Image img = new ImageIcon("src/images/mario_right.png").getImage();
     //马里奥的宽高
@@ -269,11 +269,11 @@ public class Mario extends Enery implements Runnable {
             this.yspeed -= jumpHeigh;//减速
             this.y-=this.yspeed;//上升
             //jumpHeigh++;
-            if (gf.physics.hit(this, Dir_Up)/*||hit(Dir_Left) || hit(Dir_Right)||hit(Dir_Up)&&hit(Dir_Left)||hit(Dir_Up)&& hit(Dir_Right)*/) {
+            if (gf.physics.hit(this, Dir_Up) ||gf.physics.hit(this, Dir_Left)||gf.physics.hit(this, Dir_Right)) {
                 break;//碰到东西
             }
             try {
-                Thread.sleep(gf.flashTime);
+                Thread.sleep(2*gf.flashTime);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -289,7 +289,7 @@ public class Mario extends Enery implements Runnable {
                 break;
             }
             try {
-                Thread.sleep(gf.flashTime);
+                Thread.sleep(2*gf.flashTime);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
