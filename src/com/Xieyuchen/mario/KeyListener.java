@@ -7,25 +7,25 @@ import javax.swing.ImageIcon;
 
 
 //键盘按下监听类
-public class KeyListener extends KeyAdapter{
+public class KeyListener extends KeyAdapter {
 
     private GameFrame gf;
-    public boolean jumpFlag=true;
+    public boolean jumpFlag = true;
 
     KeyListener(GameFrame gf) {
-        this.gf=gf;
+        this.gf = gf;
     }
 
     //键盘监听
     public void keyPressed(KeyEvent e) {
-        switch(e.getKeyCode()){
+        switch (e.getKeyCode()) {
             //向右走
             case KeyEvent.VK_RIGHT:
-                gf.mario.right=true;
+                gf.mario.right = true;
                 break;
             //向左走
             case KeyEvent.VK_LEFT:
-                gf.mario.left=true;
+                gf.mario.left = true;
                 break;
 
             case KeyEvent.VK_Z: //子弹
@@ -34,7 +34,7 @@ public class KeyListener extends KeyAdapter{
 
             case KeyEvent.VK_X: //加速
                 if (!gf.mario.speedFlag) { //初始为false，按下可以加速。一直按的话，flag为正。无法再次加速
-                    gf.mario.moveSpeed/=2;
+                    gf.mario.moveSpeed /= 2;
                 }
                 gf.mario.speedFlag = true;
                 break;
@@ -47,7 +47,7 @@ public class KeyListener extends KeyAdapter{
                 break;
             //向上跳
             case KeyEvent.VK_SPACE:
-                gf.mario.up=true;
+                gf.mario.up = true;
                 break;
 
             //按esc退出
@@ -58,18 +58,17 @@ public class KeyListener extends KeyAdapter{
     }
 
 
-
     //键盘释放监听
     public void keyReleased(KeyEvent e) {
 
-        switch(e.getKeyCode()){
+        switch (e.getKeyCode()) {
             //向右走
             case KeyEvent.VK_RIGHT:
                 gf.mario.right = false;
                 if (gf.mario.status == gf.mario.STATUS_SMALL) {
-                    gf.mario.img=new ImageIcon("src/images/mario_right.png").getImage();
+                    gf.mario.img = new ImageIcon("src/images/mario_right.png").getImage();
                 } else if (gf.mario.status == gf.mario.STATUS_BIG) {
-                    gf.mario.img=new ImageIcon("src/images/bigmario_right.png").getImage();
+                    gf.mario.img = new ImageIcon("src/images/bigmario_right.png").getImage();
                 }
 
                 break;
@@ -77,16 +76,16 @@ public class KeyListener extends KeyAdapter{
             case KeyEvent.VK_LEFT:
                 gf.mario.left = false;
                 if (gf.mario.status == gf.mario.STATUS_SMALL) {
-                    gf.mario.img=new ImageIcon("src/images/mario_left.png").getImage();
+                    gf.mario.img = new ImageIcon("src/images/mario_left.png").getImage();
                 } else if (gf.mario.status == gf.mario.STATUS_BIG) {
-                    gf.mario.img=new ImageIcon("src/images/bigmario_left.png").getImage();
+                    gf.mario.img = new ImageIcon("src/images/bigmario_left.png").getImage();
                 }
 
                 break;
 
             case KeyEvent.VK_X: //减速
                 if (gf.mario.speedFlag) { //按键按下后，flag为正,释放后才可减速。flag设置为false。下次再按可加速。
-                    gf.mario.moveSpeed*=2;
+                    gf.mario.moveSpeed *= 2;
                 }
                 gf.mario.speedFlag = false;
                 break;
@@ -103,14 +102,14 @@ public class KeyListener extends KeyAdapter{
                     gf.mario.down = false;
                     gf.mario.actionDown = false;
                     if (gf.mario.actionLeft) {
-                            gf.mario.img= new ImageIcon("src/images/bigmario_left.png").getImage();
-                        }
+                        gf.mario.img = new ImageIcon("src/images/bigmario_left.png").getImage();
+                    }
                     if (gf.mario.actionRight) {
-                            gf.mario.img=new ImageIcon("src/images/bigmario_right.png").getImage();
-                        }
-                        gf.mario.y+=gf.mario.height;
-                        gf.mario.height = gf.mario.img.getHeight(null);
-                        gf.mario.y-=gf.mario.height;
+                        gf.mario.img = new ImageIcon("src/images/bigmario_right.png").getImage();
+                    }
+                    gf.mario.y += gf.mario.height;
+                    gf.mario.height = gf.mario.img.getHeight(null);
+                    gf.mario.y -= gf.mario.height;
                 }
                 break;
         }

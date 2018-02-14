@@ -9,7 +9,7 @@ public class Map {
     //数据容器
     private ArrayList<String> list = new ArrayList<>();
 
-    public  int[][] readMap() throws Exception {
+    public int[][] readMap() throws Exception {
         // 构造文件输入流
         File file = new File("C:\\Users\\46514\\IdeaProjects\\SuperMario\\src\\map.txt");
         FileInputStream fis = new FileInputStream(file);
@@ -17,24 +17,24 @@ public class Map {
         BufferedReader br = new BufferedReader(isr);
 
         //直接读取一行数据
-        String value =br.readLine();
+        String value = br.readLine();
 
-        while(value!=null){
+        while (value != null) {
             //将读取到的一行数据加入到容器中
             list.add(value);
-            value =br.readLine();
+            value = br.readLine();
         }
 
         br.close();
 
         //得到多少行多少列
-        int row=list.size();
-        int cloum=0;
+        int row = list.size();
+        int cloum = 0;
 
         for (int i = 0; i < 1; i++) {
-            String str=list.get(i);
-            String [] values=str.split(",");
-            cloum=values.length;
+            String str = list.get(i);
+            String[] values = str.split(",");
+            cloum = values.length;
         }
 
 
@@ -42,10 +42,10 @@ public class Map {
 
         //将读到的字符创转换成整数，并赋值给二位数组map
         for (int i = 0; i < list.size(); i++) {
-            String str=list.get(i);
-            String [] values=str.split(",");
+            String str = list.get(i);
+            String[] values = str.split(",");
             for (int j = 0; j < values.length; j++) {
-                map[i][j]=Integer.parseInt(values[j]);
+                map[i][j] = Integer.parseInt(values[j]);
             }
         }
         return map;

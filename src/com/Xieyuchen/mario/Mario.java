@@ -9,7 +9,7 @@ import com.Xieyuchen.enery.Enery;
 //自己的角色类
 public class Mario extends Enery implements Runnable {
 
-    private GameFrame gf;
+    public GameFrame gf;
 
     public double jumpHeigh = 1;//重力
 
@@ -17,7 +17,7 @@ public class Mario extends Enery implements Runnable {
     public boolean jumpAction = false;
     public String name;
     //马里奥的坐标
-    public int x = 0 + 16 * 5, y = 224 - 16 - 2 * 16 - 1 - 1;
+    public int x = 0 + 16 * 5, y = 224 - 16 - 2 * 16 - 1 - 1 - 5 - 9;
     //马里奥的速度
     public int xspeed = 3/*小的速度*/, yspeed = 12;//y速度 小
     //马里奥的图片
@@ -46,7 +46,7 @@ public class Mario extends Enery implements Runnable {
     public Mario(int x, int y, Image img, String name, GameFrame gf) {
         super(x, y, img, name);
         this.gf = gf;
-        //gf.physics.Gravity();
+
     }
 
     public void Action() {
@@ -73,16 +73,7 @@ public class Mario extends Enery implements Runnable {
                 actionLeft = true;
                 actionRight = false;
             }
-        /*if (up && actionRight) {
-            this.img= new ImageIcon("src/images/mario_jump_right.png").getImage();
-            actionUp = true;
-            actionRight = false;
-        }
-        if (up && actionLeft) {
-            this.img= new ImageIcon("src/images/mario_jump_left.png").getImage();
-            actionUp = true;
-            actionLeft = false;
-        }*/
+
             if (jumpAction) {
                 if (actionLeft) {
                     if (this.status == STATUS_SMALL) {
@@ -148,18 +139,7 @@ public class Mario extends Enery implements Runnable {
                 }
 
             }
-            // if (!up && !right && !left) {
-            //if (actionLeft) {
-            //this.img= new ImageIcon("src/images/mario_left.png").getImage();
-            //actionLeft = false;
-            // }
-            //if (actionRight) {
-            //this.img = new ImageIcon("src/images/mario_right.png").getImage();
-            //actionRight = false;
-            //}
-            //this.img = new ImageIcon("src/images/mario_right.png").getImage();
-            //}
-            // actionUp=false;actionLeft=false;actionRight=false;
+
         } else {
             //下落图找不到
         }
@@ -173,39 +153,28 @@ public class Mario extends Enery implements Runnable {
             //向左走
             if (left) {
                 //碰撞到了
-                /*if(hit(Dir_Left)){
-                    this.xspeed=0;
-                    this.x+=1;
-                   // this.img=new ImageIcon("src/images/mario_run0.png").getImage();
-                }*/
+
                 if (!gf.physics.hit(this, Dir_Left)) {
                     if (this.x >= 0) {
                         this.x -= this.xspeed;
-                        //this.img=new ImageIcon("src/images/mario_run0.png").getImage();
+
                     }
 
 
                 }
-                //if (this.status == STATUS_BIG) {
-                 //this.xspeed = 6;
-                //}
-                 //this.xspeed = 3;
+
 
             }
 
             //向右走
             if (right) {
 
-                /*if(hit(Dir_Right)){
-                    this.xspeed=0;
-                    this.x-=1;
-                    //this.img=new ImageIcon("src/images/mario_run0.png").getImage();
-                }*/
+
                 if (!gf.physics.hit(this, Dir_Right)) {
                     //任人物向右移动
                     if (this.x < gf.GAME_FRAME_WIDTH / 2) {
                         this.x += this.xspeed;
-                        //this.img=new ImageIcon("src/images/mario_run0.png").getImage();
+
                     }
 
                     if (this.x >= gf.GAME_FRAME_WIDTH / 2) {
@@ -216,14 +185,11 @@ public class Mario extends Enery implements Runnable {
                             Enery enery = gf.eneryList.get(i);
                             enery.x -= this.xspeed;
                         }
-                        //this.img=new ImageIcon("src/images/mario_run0.png").getImage();
+
                     }
 
                 }
-                //if (this.status == STATUS_BIG) {
-                                //this.xspeed = 6;
-                                //}
-                                //this.xspeed = 3;
+
 
             }
 
@@ -241,9 +207,9 @@ public class Mario extends Enery implements Runnable {
                         jumpAction = false;
                         if (gf.mario.actionLeft) {//按键松开也是跳动作
                             if (gf.mario.status == gf.mario.STATUS_SMALL) {
-                                gf.mario.img =  new ImageIcon("src/images/mario_left.png").getImage();
+                                gf.mario.img = new ImageIcon("src/images/mario_left.png").getImage();
                             } else if (gf.mario.status == gf.mario.STATUS_BIG) {
-                                gf.mario.img= new ImageIcon("src/images/bigmario_left.png").getImage();
+                                gf.mario.img = new ImageIcon("src/images/bigmario_left.png").getImage();
                             }
 
                         }
@@ -251,7 +217,7 @@ public class Mario extends Enery implements Runnable {
                             if (gf.mario.status == gf.mario.STATUS_SMALL) {
                                 gf.mario.img = new ImageIcon("src/images/mario_right.png").getImage();
                             } else if (gf.mario.status == gf.mario.STATUS_BIG) {
-                                gf.mario.img=new ImageIcon("src/images/bigmario_right.png").getImage();
+                                gf.mario.img = new ImageIcon("src/images/bigmario_right.png").getImage();
                             }
                         }
                     }).start();
@@ -275,77 +241,52 @@ public class Mario extends Enery implements Runnable {
     private void jump() {
 
         double Length = this.yspeed;//临时
-        /*if (this.status == STATUS_BIG) {
-            Length = 80;
-        } else {
-            Length = 60;
-        }*/
-       // for (int i = 0; i < Length; i++) {
-
-        while (this.yspeed>0) {
+        while (this.yspeed > 0) {
             this.yspeed -= jumpHeigh;//减速
-            this.y-=this.yspeed;//上升
-            //jumpHeigh++;
-            if (gf.physics.hit(this, Dir_Up) ||gf.physics.hit(this, Dir_Left)||gf.physics.hit(this, Dir_Right)) {
-                //this.xspeed = 0;
+            this.y -= this.yspeed;//上升
+            if (gf.physics.hit(this, Dir_Up) || gf.physics.hit(this, Dir_Left) || gf.physics.hit(this, Dir_Right)) {
                 break;//碰到东西
             }
             try {
-                Thread.sleep(2*gf.flashTime);
+                Thread.sleep(2 * gf.flashTime);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-        while (this.yspeed<=Length) {
-            this.yspeed+=jumpHeigh;//加速
-            this.y+=this.yspeed;//下降
+        while (this.yspeed <= Length) {
+            this.yspeed += jumpHeigh;//加速
+            this.y += this.yspeed;//下降
             if (gf.physics.hit(this, Dir_Down)) {
-                //this.yspeed = 0;
-                gf.physics.isGravity=false;
-                gf.mario.y-=10;
+                gf.physics.isGravity = false;
+                gf.mario.y -= 10;
 
                 break;
             }
             if (gf.physics.hit(this, Dir_Left)) {
-                //this.yspeed = 0;
-                gf.physics.isGravity=false;
-                gf.mario.x+=10;
+                gf.physics.isGravity = false;
+                gf.mario.x += 10;
 
                 break;
             }
             if (gf.physics.hit(this, Dir_Right)) {
-                //this.yspeed = 0;
-                gf.physics.isGravity=false;
-                gf.mario.x-=10;
+                gf.physics.isGravity = false;
+                gf.mario.x -= 10;
 
                 break;
             }
 
             try {
-                Thread.sleep(2*gf.flashTime);
+                Thread.sleep(2 * gf.flashTime);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-
-        //for (int i = 0; i < jumpHeigh; i++) {
-
-            //gf.mario.y += this.yspeed;
-
-
-
-
-        //}
-        //if (this.status == STATUS_BIG) {
-            //this.yspeed = 4;
-        //}
-        //this.yspeed = 1;//还原速度
-        this.yspeed = (int)Length;
+        this.yspeed = (int) Length;
         if (this.status == STATUS_BIG) {
-            this.xspeed = 6;
-            }
-            this.xspeed = 3;
-   }
+            this.xspeed = 4;
+        }
+        this.xspeed = 3;
+    }
 
 
     //添加子弹
