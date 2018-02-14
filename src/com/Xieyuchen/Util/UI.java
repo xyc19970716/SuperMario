@@ -1,10 +1,14 @@
 package com.Xieyuchen.Util;
 
 
+import com.Xieyuchen.mario.GameFrame;
+
 import java.awt.*;
 import java.io.*;
 
 public class UI {
+    public Image uiCoinImage;
+    //public GameFrame gf;
     public Font getSelfDefinedFont(String filename, int size) {
         Font font;
         //字体文件在conf下面
@@ -25,14 +29,14 @@ public class UI {
         return font;
     }
 
-    public void printInfo(Graphics g, Font font, String str, Color color, String period) {
+    public void printInfo(Graphics g, Font font, String str, Color color, String period, String coinCount) {
         g.setColor(color);
         g.setFont(font);
         g.drawString("MARIO", 16 * 2, 24);
         g.drawString("000000", 16 * 2, 24 + 8);
-        g.drawString("O", 16 * 2 + 16 * 2 + 8 * 4, 24 + 8);
+        //g.drawString("O", 16 * 2 + 16 * 2 + 8 * 4, 24 + 8);
         g.drawString("X", 16 * 2 + 16 * 2 + 8 * 4 + 8, 24 + 8);
-        g.drawString("00", 16 * 2 + 16 * 2 + 8 * 4 + 8 + 8, 24 + 8);
+        g.drawString(coinCount, 16 * 2 + 16 * 2 + 8 * 4 + 8 + 8, 24 + 8);
         g.drawString("WORLD", 255 - 16 * 7, 24);
         g.drawString("1-1", 255 - 16 * 7 + 8, 24 + 8);
         g.drawString("TIME", 255 - 8 * 7, 24);

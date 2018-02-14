@@ -12,7 +12,7 @@ public class Mario extends Enery implements Runnable {
     public GameFrame gf;
 
     public double jumpHeigh = 1;//重力
-
+    public int coinCount;
     public boolean jumpFlag = true;
     public boolean jumpAction = false;
     public String name;

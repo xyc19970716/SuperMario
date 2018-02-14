@@ -68,8 +68,8 @@ public class GameFrame extends JFrame {
                     if (e.name.equals("coin") || e.name.equals("powerUpCoin")) {
                         //r.delay(64);
                         e.img = new ImageIcon("src/images/coin" + actionEneryTime / 1200 % 3 + ".png").getImage();
+                        this.ui.uiCoinImage = new ImageIcon("src/images/uicoin" + actionEneryTime / 1200 % 3 + ".png").getImage();
                         actionEneryTime += flashTime;
-
                     }
                     if (e.x < -32) {
                         eneryList.remove(e);
@@ -93,7 +93,6 @@ public class GameFrame extends JFrame {
                     }
 
                 }
-
 
                 //检查子弹是否出界
                 checkBoom();
@@ -239,7 +238,15 @@ public class GameFrame extends JFrame {
         currentTime = (int) (new Date().getTime() / 1000);
         period = 400 - (currentTime - startTime);//time
 
-        ui.printInfo(big, font, "MARIO", Color.white, String.valueOf(period));
+        if (this.mario.coinCount < 10) {
+            ui.printInfo(big, font, "MARIO", Color.white, String.valueOf(period), 0 + String.valueOf(this.mario.coinCount));
+        } else {
+            ui.printInfo(big, font, "MARIO", Color.white, String.valueOf(period), String.valueOf(this.mario.coinCount));
+        }
+
+        //UI小金币图标
+        big.drawImage(ui.uiCoinImage, 16 * 2 + 16 * 2 + 8 * 4 + 1, 24, 5, 8, null);
+
         g.drawImage(bi, 0, 0, null);
 
 

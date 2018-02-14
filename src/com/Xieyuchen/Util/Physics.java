@@ -75,6 +75,13 @@ public class Physics {
                     gf.eneryList.remove(enery);
                     sprite.eatMushroom = false;
                 }
+                if (enery.name.equals("coin")) {
+                    gf.mario.coinCount++;
+                    if (gf.mario.coinCount == 100) {
+                        gf.mario.coinCount = 0;
+                        //加命
+                    }
+                }
                 return true;
             }
         }
