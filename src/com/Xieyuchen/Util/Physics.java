@@ -27,10 +27,10 @@ public class Physics {
         System.out.println("hit!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         for (int i = 0; i < gf.eneryList.size(); i++) {
             Enery enery = gf.eneryList.get(i);
-            if (sprite.eatMushroom && enery.name.equals("CreateBigMushroom") && sprite.eatId == enery.Id) {//找到吃掉的蘑菇删除它
+            /*if (sprite.eatMushroom && enery.name.equals("CreateBigMushroom") && sprite.eatId == enery.Id) {//找到吃掉的蘑菇删除它
                 gf.eneryList.remove(enery);
                 sprite.eatMushroom = false;
-            }
+            }*/
             switch (dir) {
                 case "Left":
                     rect = new Rectangle(enery.x + 2, enery.y, enery.width, enery.height);//x+2
@@ -77,7 +77,7 @@ public class Physics {
                 }
                 if (enery.name.equals("CreateBigMushroom") && (dir.equals("Left") ||dir.equals("Right") ||dir.equals("Down"))) { //吃蘑菇变大
                     sprite.eatMushroom = true;
-                    sprite.eatId = enery.Id;
+                    //sprite.eatId = enery.Id;
                     sprite.status=sprite.STATUS_BIG;
                     sprite.x = sprite.x + sprite.width;
                     sprite.y = sprite.y + sprite.height;
@@ -86,8 +86,10 @@ public class Physics {
                     sprite.height = sprite.img.getHeight(null);
                     sprite.x = sprite.x - sprite.width;
                     sprite.y = sprite.y - sprite.height;
-                    sprite.xspeed = 8;
-                    sprite.yspeed = 8;
+                    sprite.xspeed = 4;//大
+                    sprite.yspeed = 10;//大
+                    gf.eneryList.remove(enery);
+                    sprite.eatMushroom = false;
 
                 }
                 return true;
@@ -104,7 +106,7 @@ public class Physics {
 
             while(true){
                 try {
-                    sleep(10);
+                    sleep(2);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -127,13 +129,13 @@ public class Physics {
 
 
                     }*/
-                    else if (/*y<=224*/!hit(gf.mario,gf.mario.Dir_Down)){
+                    //else if (/*y<=224*/!hit(gf.mario,gf.mario.Dir_Down)){
                         /*if (!hit(Dir_Down)) {*/
                         isGravity=true;
-                        gf.mario.y+=gf.mario.yspeed;
+                        gf.mario.y+=gf.mario.jumpHeigh;
                         // }
 
-                    }
+                    //}
                     if (gf.mario.y>224) {
                         Dead dead = new Dead(this.gf);
                         //new Thread(mario).stop();
@@ -141,7 +143,7 @@ public class Physics {
                     }
 
                     try {
-                        sleep(10);
+                        sleep(1);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }

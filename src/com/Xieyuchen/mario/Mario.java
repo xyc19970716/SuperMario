@@ -11,12 +11,14 @@ public class Mario extends Enery implements Runnable {
 
     private GameFrame gf;
 
+    public double jumpHeigh = 1;//重力
+
     public boolean jumpFlag = true;
     public String name;
     //马里奥的坐标
     public int x = 0 + 16 * 5, y = 224 - 16 - 2 * 16 - 1 - 1;
     //马里奥的速度
-    public int xspeed = 2, yspeed = 1;
+    public int xspeed = 2/*小的速度*/, yspeed = 10;//y速度 小
     //马里奥的图片
     public Image img = new ImageIcon("src/images/mario_right.png").getImage();
     //马里奥的宽高
@@ -181,10 +183,10 @@ public class Mario extends Enery implements Runnable {
                         //this.img=new ImageIcon("src/images/mario_run0.png").getImage();
                     }
 
-                    if (this.status == STATUS_BIG) {
-                        this.xspeed = 4;
-                    }
-                    this.xspeed = 2;
+                    //if (this.status == STATUS_BIG) {
+                       // this.xspeed = 4;
+                    //}
+                   // this.xspeed = 2;
                 }
 
 
@@ -215,10 +217,10 @@ public class Mario extends Enery implements Runnable {
                         }
                         //this.img=new ImageIcon("src/images/mario_run0.png").getImage();
                     }
-                    if (this.status == STATUS_BIG) {
-                        this.xspeed = 4;
-                    }
-                    this.xspeed = 2;
+                    //if (this.status == STATUS_BIG) {
+                        //this.xspeed = 4;
+                    //}
+                    //this.xspeed = 2;
                 }
 
 
@@ -254,47 +256,59 @@ public class Mario extends Enery implements Runnable {
 
     //向上跳的函数
     private void jump() {
-        int jumpHeigh = 0;
-        int Length;
-        if (this.status == STATUS_BIG) {
+
+        double Length = this.yspeed;//临时
+        /*if (this.status == STATUS_BIG) {
             Length = 80;
         } else {
             Length = 60;
-        }
-        for (int i = 0; i < Length; i++) {
-            gf.mario.y -= this.yspeed;
-            jumpHeigh++;
-            if (gf.physics.hit(this, Dir_Up)/*||hit(Dir_Left) || hit(Dir_Right)||hit(Dir_Up)&&hit(Dir_Left)||hit(Dir_Up)&& hit(Dir_Right)*/) {
+        }*/
+       // for (int i = 0; i < Length; i++) {
 
+        while (this.yspeed>0) {
+            this.yspeed -= jumpHeigh;//减速
+            this.y-=this.yspeed;//上升
+            //jumpHeigh++;
+            if (gf.physics.hit(this, Dir_Up)/*||hit(Dir_Left) || hit(Dir_Right)||hit(Dir_Up)&&hit(Dir_Left)||hit(Dir_Up)&& hit(Dir_Right)*/) {
+                break;//碰到东西
+            }
+            try {
+                Thread.sleep(gf.flashTime);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        while (this.yspeed<=Length) {
+            this.yspeed+=jumpHeigh;//加速
+            this.y+=this.yspeed;//下降
+            if (gf.physics.hit(this, Dir_Down)) {
+                this.yspeed = 0;
+                gf.physics.isGravity=false;
+                gf.mario.y-=10;
 
                 break;
             }
             try {
-                Thread.sleep(8);
+                Thread.sleep(gf.flashTime);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-        for (int i = 0; i < jumpHeigh; i++) {
-            gf.mario.y += this.yspeed;
-            if (gf.physics.hit(this, Dir_Down)) {
-                this.yspeed = 0;
 
-            }
-            try {
-                Thread.sleep(8);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+        //for (int i = 0; i < jumpHeigh; i++) {
+
+            //gf.mario.y += this.yspeed;
 
 
-        }
-        if (this.status == STATUS_BIG) {
-            this.yspeed = 4;
-        }
-        this.yspeed = 1;//还原速度
 
-    }
+
+        //}
+        //if (this.status == STATUS_BIG) {
+            //this.yspeed = 4;
+        //}
+        //this.yspeed = 1;//还原速度
+        this.yspeed = (int)Length;
+   }
 
 
     //添加子弹
