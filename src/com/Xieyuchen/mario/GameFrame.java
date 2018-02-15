@@ -235,17 +235,16 @@ public class GameFrame extends JFrame {
         //画人物
         big.drawImage(mario.img, mario.x, mario.y, mario.width, mario.height, null);
 
+
+
+
         currentTime = (int) (new Date().getTime() / 1000);
-        period = 400 - (currentTime - startTime);//time
+        period = 400 - (currentTime - startTime);
 
-        if (this.mario.coinCount < 10) {
-            ui.printInfo(big, font, "MARIO", Color.white, String.valueOf(period), 0 + String.valueOf(this.mario.coinCount));
-        } else {
-            ui.printInfo(big, font, "MARIO", Color.white, String.valueOf(period), String.valueOf(this.mario.coinCount));
-        }
+        ui.printInfo(big, font, "MARIO", Color.white, period, this.mario.coinCount);
 
-        //UI小金币图标
-        big.drawImage(ui.uiCoinImage, 16 * 2 + 16 * 2 + 8 * 4 + 1, 24, 5, 8, null);
+
+
 
         g.drawImage(bi, 0, 0, null);
 
