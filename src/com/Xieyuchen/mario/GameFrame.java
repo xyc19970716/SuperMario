@@ -1,7 +1,12 @@
 package com.Xieyuchen.mario;
 
+import java.applet.Applet;
+import java.applet.AudioClip;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -181,7 +186,6 @@ public class GameFrame extends JFrame {
         //该窗体添加键盘监听
         KeyListener kl = new KeyListener(this);
         this.addKeyListener(kl);
-
 
         startTime = (int) (new Date().getTime() / 1000);
 

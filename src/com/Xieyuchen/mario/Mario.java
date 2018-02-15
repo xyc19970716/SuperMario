@@ -1,9 +1,14 @@
 package com.Xieyuchen.mario;
 
+import java.applet.Applet;
+import java.applet.AudioClip;
 import java.awt.*;
+import java.io.File;
+import java.net.MalformedURLException;
 import javax.swing.ImageIcon;
 
 
+import com.Xieyuchen.Util.Sound;
 import com.Xieyuchen.enery.Enery;
 
 //自己的角色类
@@ -33,6 +38,10 @@ public class Mario extends Enery implements Runnable {
     public int moveSpeed = 16 * 2;
     public boolean speedFlag = false;
     public boolean eatMushroom = false;//
+
+    //public boolean hitsmallBgm = false;//跳是否被顶
+    public Sound sound = new Sound();
+
 
     public int eatId;//蘑菇
     private int actionTime = 0;
@@ -74,7 +83,7 @@ public class Mario extends Enery implements Runnable {
                 actionRight = false;
             }
 
-            if (jumpAction) {
+            if (jumpAction) {//按键松开也是跳动作
                 if (actionLeft) {
                     if (this.status == STATUS_SMALL) {
                         this.img = new ImageIcon("src/images/mario_jump_left.png").getImage();
@@ -202,10 +211,12 @@ public class Mario extends Enery implements Runnable {
                     new Thread(() -> {
                         System.out.println("this is jump thread.");
                         jumpAction = true;//跳的动作不受按键影响
+                        //跳音乐
+                        sound.jumpBgm.play();
                         jump();
                         jumpFlag = true;
                         jumpAction = false;
-                        if (gf.mario.actionLeft) {//按键松开也是跳动作
+                        if (gf.mario.actionLeft) {//跳完动作复位
                             if (gf.mario.status == gf.mario.STATUS_SMALL) {
                                 gf.mario.img = new ImageIcon("src/images/mario_left.png").getImage();
                             } else if (gf.mario.status == gf.mario.STATUS_BIG) {
