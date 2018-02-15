@@ -136,12 +136,12 @@ public class GameFrame extends JFrame {
                     pipe_tou.Id = eneryList.size() - 1;
                     eneryList.add(pipe_tou);
                     if (map[i + 2][j] == 0) {
-                        pipe_sheng = new Pipe(j * 16 + 2, (i + 2) * 16, new ImageIcon("src/images/pipe_sheng.png").getImage(), "pipesheng");
+                        pipe_sheng = new Pipe(j * 16 , (i + 2) * 16, new ImageIcon("src/images/pipe_sheng.png").getImage(), "pipesheng");
                         pipe_sheng.Id = eneryList.size() - 1;
                         eneryList.add(pipe_sheng);
                     }
                     if (map[i + 3][j] == 0) {
-                        pipe_sheng = new Pipe(j * 16 + 2, (i + 3) * 16, new ImageIcon("src/images/pipe_sheng.png").getImage(), "pipesheng");
+                        pipe_sheng = new Pipe(j * 16 , (i + 3) * 16, new ImageIcon("src/images/pipe_sheng.png").getImage(), "pipesheng");
                         pipe_sheng.Id = eneryList.size() - 1;
                         eneryList.add(pipe_sheng);
                     }
