@@ -11,12 +11,7 @@ public class Test {
     public static void main(String[] args) throws Exception {
         GameFrame gf = new GameFrame();
         //背景音乐
-        try {
-            AudioClip Bgm = Applet.newAudioClip(new File("src/sounds/地上.wav").toURL());
-            Bgm.loop();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
+        gf.sound.Bgm.loop();
 
         gf.initFrame();
 

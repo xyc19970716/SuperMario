@@ -13,6 +13,7 @@ import java.util.Date;
 import javax.swing.*;
 
 import com.Xieyuchen.Util.Physics;
+import com.Xieyuchen.Util.Sound;
 import com.Xieyuchen.Util.UI;
 import com.Xieyuchen.enery.Brick;
 import com.Xieyuchen.enery.Coin;
@@ -34,6 +35,7 @@ public class GameFrame extends JFrame {
     public int GAME_FRAME_WIDTH = 255;
     public int GAME_FRAME_HEIGHT = 224;
 
+    public Sound sound;
     public int movs, bgspeed = 1, headmovs;
     public int startTime;
     public int currentTime;
@@ -59,7 +61,9 @@ public class GameFrame extends JFrame {
         new Thread(mario).start();
         Map mp = new Map();
         bg = new BackgroundImage();
-        ui = new UI();
+        ui = new UI(this);
+        sound = new Sound();
+
         this.physics.Gravity();
         //窗体重绘线程
         new Thread(() -> {
@@ -242,10 +246,9 @@ public class GameFrame extends JFrame {
 
 
 
-        currentTime = (int) (new Date().getTime() / 1000);
-        period = 400 - (currentTime - startTime);
 
-        ui.printInfo(big, font, "MARIO", Color.white, period, this.mario.coinCount);
+
+        ui.printInfo(big, font, Color.white);
 
 
 

@@ -48,7 +48,7 @@ public class Physics {
             if (myrect.intersects(rect)) {
                 if (enery.name.equals("powerUpCoin") && dir.equals("Up")) {  //创建蘑菇
                     System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaMushroom");
-                    gf.mario.sound.hitPowerupBgm.play();
+                    gf.sound.hitPowerupBgm.play();
                     Enery createBigMushroom = new Mushroom(enery.x, enery.y, new ImageIcon("src/images/createBigMushroom.png").getImage(), "CreateBigMushroom", gf);
                     createBigMushroom.x = enery.x;
                     createBigMushroom.y = enery.y - createBigMushroom.height;
@@ -61,7 +61,7 @@ public class Physics {
                     gf.eneryList.add(createBigMushroom);
                 }
                 if (enery.name.equals("CreateBigMushroom") && (dir.equals("Left") || dir.equals("Right") || dir.equals("Down") || dir.equals("Up"))) { //吃蘑菇变大
-                    gf.mario.sound.eatPowerupBgm.play();
+                    gf.sound.eatPowerupBgm.play();
                     sprite.eatMushroom = true;
                     //sprite.eatId = enery.Id;
                     sprite.status = sprite.STATUS_BIG;
@@ -76,17 +76,19 @@ public class Physics {
                     sprite.yspeed = 12;//大
                     gf.eneryList.remove(enery);
                     sprite.eatMushroom = false;
+                    sprite.score += 1000;
                 }
                 if (enery.name.equals("coin") && dir.equals("Up")) {//顶到金币
-                    gf.mario.sound.hitCoinBgm.play();
-                    gf.mario.coinCount++;
-                    if (gf.mario.coinCount == 100) {
-                        gf.mario.coinCount = 0;
+                    gf.sound.hitCoinBgm.play();
+                    sprite.coinCount++;
+                    sprite.score += 200;
+                    if (sprite.coinCount == 100) {
+                        sprite.coinCount = 0;
                         //加命
                     }
                 }
                 if ((enery.name.equals("brick") || enery.name.equals("without coin"))&& dir.equals("Up")) {
-                    gf.mario.sound.smallHitBgm.play();
+                    gf.sound.smallHitBgm.play();
                 }
 
                 return true;

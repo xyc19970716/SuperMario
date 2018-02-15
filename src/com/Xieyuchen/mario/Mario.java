@@ -40,8 +40,9 @@ public class Mario extends Enery implements Runnable {
     public boolean eatMushroom = false;//
 
     //public boolean hitsmallBgm = false;//跳是否被顶
-    public Sound sound = new Sound();
 
+    //马里奥分数
+    public int score = 0;// 金币200 powerup 1000 走路怪 100
 
     public int eatId;//蘑菇
     private int actionTime = 0;
@@ -212,7 +213,7 @@ public class Mario extends Enery implements Runnable {
                         System.out.println("this is jump thread.");
                         jumpAction = true;//跳的动作不受按键影响
                         //跳音乐
-                        sound.jumpBgm.play();
+                        gf.sound.jumpBgm.play();
                         jump();
                         jumpFlag = true;
                         jumpAction = false;
