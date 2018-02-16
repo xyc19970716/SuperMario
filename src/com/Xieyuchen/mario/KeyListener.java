@@ -41,7 +41,7 @@ public class KeyListener extends KeyAdapter {
 
             //下蹲（大）
             case KeyEvent.VK_DOWN:
-                if (gf.mario.status == gf.mario.STATUS_BIG) {
+                if (gf.mario.status == gf.mario.STATUS_BIG || gf.mario.status == gf.mario.STATUS_BIGFIRE) {
                     gf.mario.down = true;
                 }
                 break;
@@ -69,6 +69,8 @@ public class KeyListener extends KeyAdapter {
                     gf.mario.img = new ImageIcon("src/images/mario_right.png").getImage();
                 } else if (gf.mario.status == gf.mario.STATUS_BIG) {
                     gf.mario.img = new ImageIcon("src/images/bigmario_right.png").getImage();
+                } else if (gf.mario.status == gf.mario.STATUS_BIGFIRE) {
+                    gf.mario.img = new ImageIcon("src/images/bigfiremario_right.png").getImage();
                 }
 
                 break;
@@ -79,6 +81,8 @@ public class KeyListener extends KeyAdapter {
                     gf.mario.img = new ImageIcon("src/images/mario_left.png").getImage();
                 } else if (gf.mario.status == gf.mario.STATUS_BIG) {
                     gf.mario.img = new ImageIcon("src/images/bigmario_left.png").getImage();
+                } else if (gf.mario.status == gf.mario.STATUS_BIGFIRE) {
+                    gf.mario.img = new ImageIcon("src/images/bigfiremario_left.png").getImage();
                 }
 
                 break;
@@ -106,6 +110,18 @@ public class KeyListener extends KeyAdapter {
                     }
                     if (gf.mario.actionRight) {
                         gf.mario.img = new ImageIcon("src/images/bigmario_right.png").getImage();
+                    }
+                    gf.mario.y += gf.mario.height;
+                    gf.mario.height = gf.mario.img.getHeight(null);
+                    gf.mario.y -= gf.mario.height;
+                } else if (gf.mario.status == gf.mario.STATUS_BIGFIRE) {
+                    gf.mario.down = false;
+                    gf.mario.actionDown = false;
+                    if (gf.mario.actionLeft) {
+                        gf.mario.img = new ImageIcon("src/images/bigfiremario_left.png").getImage();
+                    }
+                    if (gf.mario.actionRight) {
+                        gf.mario.img = new ImageIcon("src/images/bigfiremario_right.png").getImage();
                     }
                     gf.mario.y += gf.mario.height;
                     gf.mario.height = gf.mario.img.getHeight(null);

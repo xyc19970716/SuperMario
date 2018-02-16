@@ -12,6 +12,7 @@ public class Sound {
     public AudioClip hitCoinBgm;
     public AudioClip hitPowerupBgm;
     public AudioClip eatPowerupBgm;
+    public AudioClip bigDestoryBrickBgm;
 
     {
         try {
@@ -21,6 +22,7 @@ public class Sound {
             hitCoinBgm = Applet.newAudioClip(new File("src/sounds/金币.wav").toURL());
             hitPowerupBgm = Applet.newAudioClip(new File("src/sounds/顶出蘑菇,花或星.wav").toURL());
             eatPowerupBgm = Applet.newAudioClip(new File("src/sounds/吃到蘑菇或花.wav").toURL());
+            bigDestoryBrickBgm = Applet.newAudioClip(new File("src/sounds/顶破砖.wav").toURL());
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }

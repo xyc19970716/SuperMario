@@ -34,6 +34,7 @@ public class Mario extends Enery implements Runnable {
     public int STATUS_DEAD = 0;
     public int STATUS_SMALL = 1;
     public int STATUS_BIG = 2;
+    public int STATUS_BIGFIRE = 3;
     //马里奥移动速度
     public int moveSpeed = 16 * 2;
     public boolean speedFlag = false;
@@ -67,6 +68,8 @@ public class Mario extends Enery implements Runnable {
 
                 } else if (this.status == STATUS_BIG) {
                     this.img = new ImageIcon("src/images/bigmario_right" + actionTime / 50 % 3 + ".png").getImage();
+                } else if (this.status == STATUS_BIGFIRE) {
+                    this.img = new ImageIcon("src/images/bigfiremario_right" + actionTime / 50 % 3 + ".png").getImage();
                 }
                 actionTime += gf.flashTime;
                 actionRight = true;
@@ -78,6 +81,8 @@ public class Mario extends Enery implements Runnable {
 
                 } else if (this.status == STATUS_BIG) {
                     this.img = new ImageIcon("src/images/bigmario_left" + actionTime / 50 % 3 + ".png").getImage();
+                } else if (this.status == STATUS_BIGFIRE) {
+                    this.img = new ImageIcon("src/images/bigfiremario_left" + actionTime / 50 % 3 + ".png").getImage();
                 }
                 actionTime += gf.flashTime;
                 actionLeft = true;
@@ -91,6 +96,8 @@ public class Mario extends Enery implements Runnable {
                         //actionLeft = false;
                     } else if (this.status == STATUS_BIG) {
                         this.img = new ImageIcon("src/images/bigmario_jump_left.png").getImage();
+                    } else if (this.status == STATUS_BIGFIRE) {
+                        this.img = new ImageIcon("src/images/bigfiremario_jump_left.png").getImage();
                     }
 
                 }
@@ -100,6 +107,8 @@ public class Mario extends Enery implements Runnable {
                         //actionRight = false;
                     } else if (this.status == STATUS_BIG) {
                         this.img = new ImageIcon("src/images/bigmario_jump_right.png").getImage();
+                    } else if (this.status == STATUS_BIGFIRE) {
+                        this.img = new ImageIcon("src/images/bigfiremario_jump_right.png").getImage();
                     }
 
                 }
@@ -112,6 +121,8 @@ public class Mario extends Enery implements Runnable {
 
                 } else if (this.status == STATUS_BIG) {
                     this.img = new ImageIcon("src/images/bigmario_jump_right.png").getImage();
+                } else if (this.status == STATUS_BIGFIRE) {
+                    this.img = new ImageIcon("src/images/bigfiremario_jump_right.png").getImage();
                 }
                 actionLeft = false;
                 actionRight = true;
@@ -122,6 +133,8 @@ public class Mario extends Enery implements Runnable {
 
                 } else if (this.status == STATUS_BIG) {
                     this.img = new ImageIcon("src/images/bigmario_jump_left.png").getImage();
+                } else if (this.status == STATUS_BIGFIRE) {
+                    this.img = new ImageIcon("src/images/bigfiremario_jump_left.png").getImage();
                 }
                 actionLeft = false;
                 actionRight = true;
@@ -132,15 +145,19 @@ public class Mario extends Enery implements Runnable {
                 if (actionLeft) {
                     if (this.status == STATUS_BIG) {
                         this.img = new ImageIcon("src/images/bigmario_down_left.png").getImage();
+                    } else if (this.status == STATUS_BIGFIRE) {
+                        this.img = new ImageIcon("src/images/bigfiremario_down_left.png").getImage();
                     }
                 }
                 if (actionRight) {
                     if (this.status == STATUS_BIG) {
                         this.img = new ImageIcon("src/images/bigmario_down_right.png").getImage();
+                    } else if (this.status == STATUS_BIGFIRE) {
+                        this.img = new ImageIcon("src/images/bigfiremario_down_right.png").getImage();
                     }
                 }
                 if (!actionDown) {
-                    if (this.status == STATUS_BIG) {
+                    if (this.status == STATUS_BIG || this.status == STATUS_BIGFIRE) {
                         gf.mario.y += gf.mario.height;
                         gf.mario.height = gf.mario.img.getHeight(null);
                         gf.mario.y -= gf.mario.height;
@@ -160,9 +177,7 @@ public class Mario extends Enery implements Runnable {
     public void run() {
         while (true) {
             System.out.println("this is mario thread.");
-            if (right && left) {
-                continue;
-            }
+
             //向左走
             if (left) {
                 //碰撞到了
@@ -174,8 +189,6 @@ public class Mario extends Enery implements Runnable {
                     }
 
 
-                } else {
-                    this.x+=this.xspeed;
                 }
 
 
@@ -204,8 +217,6 @@ public class Mario extends Enery implements Runnable {
 
                     }
 
-                } else {
-                    this.x-=this.xspeed;
                 }
 
                 try {
@@ -236,6 +247,8 @@ public class Mario extends Enery implements Runnable {
                                 gf.mario.img = new ImageIcon("src/images/mario_left.png").getImage();
                             } else if (gf.mario.status == gf.mario.STATUS_BIG) {
                                 gf.mario.img = new ImageIcon("src/images/bigmario_left.png").getImage();
+                            } else if (this.status == this.STATUS_BIGFIRE) {
+                                gf.mario.img = new ImageIcon("src/images/bigfiremario_left.png").getImage();
                             }
 
                         }
@@ -244,6 +257,8 @@ public class Mario extends Enery implements Runnable {
                                 gf.mario.img = new ImageIcon("src/images/mario_right.png").getImage();
                             } else if (gf.mario.status == gf.mario.STATUS_BIG) {
                                 gf.mario.img = new ImageIcon("src/images/bigmario_right.png").getImage();
+                            } else if (gf.mario.status == this.STATUS_BIGFIRE) {
+                                gf.mario.img = new ImageIcon("src/images/bigfiremario_right.png").getImage();
                             }
                         }
                     }).start();
@@ -338,7 +353,7 @@ public class Mario extends Enery implements Runnable {
 
         }
         this.yspeed = (int) Length;
-        if (this.status == STATUS_BIG) {
+        if (this.status == STATUS_BIG || this.status == STATUS_BIGFIRE) {
             this.xspeed = 4;
         }
         this.xspeed = 3;
