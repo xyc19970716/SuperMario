@@ -196,72 +196,104 @@ public class GameFrame extends JFrame {
         KeyListener kl = new KeyListener(this);
         this.addKeyListener(kl);
 
-        startTime = (int) (new Date().getTime() / 1000);
+
 
 
     }
 
     public int actionEneryTime;
 
-    Robot r = new Robot();
+
 
     public void paint(Graphics g) {
         //利用双缓冲画背景图片和马里奥
         BufferedImage bi = (BufferedImage) this.createImage(this.getSize().width, this.getSize().height);
         Graphics big = bi.getGraphics();
-
-        if (bg.width > GAME_FRAME_WIDTH + movs) {//背景图的宽大于窗口宽+移动的
-            big.drawImage(bg.img, 0, 0, GAME_FRAME_WIDTH, GAME_FRAME_HEIGHT,
-                    movs, 0, GAME_FRAME_WIDTH + movs, GAME_FRAME_HEIGHT, null);
-        }//窗口没跑出背景
-        if (bg.width <= GAME_FRAME_WIDTH + movs) {//背景图的宽小于窗口的宽+移动的
-            headmovs = GAME_FRAME_WIDTH + movs - bg.width;//窗口跑出的距离
-            big.drawImage(bg.img, 0, 0, GAME_FRAME_WIDTH - headmovs, GAME_FRAME_HEIGHT,
-                    movs, 0, bg.width, GAME_FRAME_HEIGHT, null);
-            big.drawImage(bg.img, GAME_FRAME_WIDTH - headmovs, 0, GAME_FRAME_WIDTH, GAME_FRAME_HEIGHT,
-                    0, 0, headmovs, GAME_FRAME_HEIGHT, null);
-            if (headmovs >= GAME_FRAME_WIDTH) { //窗口跑出的距离大于窗口宽度度
-                movs = headmovs - GAME_FRAME_WIDTH;//重新开始
+        if (!ui.startGame) {
+            if (bg.width > GAME_FRAME_WIDTH + movs) {//背景图的宽大于窗口宽+移动的
+                big.drawImage(bg.img, 0, 0, GAME_FRAME_WIDTH, GAME_FRAME_HEIGHT,
+                        movs, 0, GAME_FRAME_WIDTH + movs, GAME_FRAME_HEIGHT, null);
+            }//窗口没跑出背景
+            if (bg.width <= GAME_FRAME_WIDTH + movs) {//背景图的宽小于窗口的宽+移动的
+                headmovs = GAME_FRAME_WIDTH + movs - bg.width;//窗口跑出的距离
+                big.drawImage(bg.img, 0, 0, GAME_FRAME_WIDTH - headmovs, GAME_FRAME_HEIGHT,
+                        movs, 0, bg.width, GAME_FRAME_HEIGHT, null);
+                big.drawImage(bg.img, GAME_FRAME_WIDTH - headmovs, 0, GAME_FRAME_WIDTH, GAME_FRAME_HEIGHT,
+                        0, 0, headmovs, GAME_FRAME_HEIGHT, null);
+                if (headmovs >= GAME_FRAME_WIDTH) { //窗口跑出的距离大于窗口宽度度
+                    movs = headmovs - GAME_FRAME_WIDTH;//重新开始
+                }
             }
-        }
-        //movs +=bgspeed;
+            //总画
+            for (int i = 0; i < eneryList.size(); i++) {
+                Enery e = eneryList.get(i);
+                big.drawImage(e.img, e.x, e.y, e.width, e.height, null);
+            }
 
-        for (int i = 0; i < spriteList.size(); i++) {
-            Enery e = spriteList.get(i);
-            big.drawImage(e.img, e.x, e.y, e.width, e.height, null);
-        }
+            ui.printInfo(big, font, Color.white);
 
 
-
-        //总画
-        for (int i = 0; i < eneryList.size(); i++) {
-            Enery e = eneryList.get(i);
-            big.drawImage(e.img, e.x, e.y, e.width, e.height, null);
-        }
-
-        //画子弹
-        for (Boom b : boomList) {
+        } else if (ui.showLiveUI) {
             Color c = big.getColor();
-            big.setColor(Color.red);
-            big.fillOval(b.x += b.speed, b.y += bspeed, b.width, b.width);
+            big.setColor(Color.black);
+            big.fillRect(0,0,GAME_FRAME_WIDTH,GAME_FRAME_HEIGHT);
             big.setColor(c);
+            ui.printInfo(big, font, Color.white);
+        } else {
+
+            if (bg.width > GAME_FRAME_WIDTH + movs) {//背景图的宽大于窗口宽+移动的
+                big.drawImage(bg.img, 0, 0, GAME_FRAME_WIDTH, GAME_FRAME_HEIGHT,
+                        movs, 0, GAME_FRAME_WIDTH + movs, GAME_FRAME_HEIGHT, null);
+            }//窗口没跑出背景
+            if (bg.width <= GAME_FRAME_WIDTH + movs) {//背景图的宽小于窗口的宽+移动的
+                headmovs = GAME_FRAME_WIDTH + movs - bg.width;//窗口跑出的距离
+                big.drawImage(bg.img, 0, 0, GAME_FRAME_WIDTH - headmovs, GAME_FRAME_HEIGHT,
+                        movs, 0, bg.width, GAME_FRAME_HEIGHT, null);
+                big.drawImage(bg.img, GAME_FRAME_WIDTH - headmovs, 0, GAME_FRAME_WIDTH, GAME_FRAME_HEIGHT,
+                        0, 0, headmovs, GAME_FRAME_HEIGHT, null);
+                if (headmovs >= GAME_FRAME_WIDTH) { //窗口跑出的距离大于窗口宽度度
+                    movs = headmovs - GAME_FRAME_WIDTH;//重新开始
+                }
+            }
+            //movs +=bgspeed;
+
+            for (int i = 0; i < spriteList.size(); i++) {
+                Enery e = spriteList.get(i);
+                big.drawImage(e.img, e.x, e.y, e.width, e.height, null);
+            }
+
+
+
+            //总画
+            for (int i = 0; i < eneryList.size(); i++) {
+                Enery e = eneryList.get(i);
+                big.drawImage(e.img, e.x, e.y, e.width, e.height, null);
+            }
+
+            //画子弹
+            for (Boom b : boomList) {
+                Color c = big.getColor();
+                big.setColor(Color.red);
+                big.fillOval(b.x += b.speed, b.y += bspeed, b.width, b.width);
+                big.setColor(c);
+            }
+
+            //画人物
+            big.drawImage(mario.img, mario.x, mario.y, mario.width, mario.height, null);
+
+
+
+
+
+
+            ui.printInfo(big, font, Color.white);
+
+
+
+
+
         }
-
-        //画人物
-        big.drawImage(mario.img, mario.x, mario.y, mario.width, mario.height, null);
-
-
-
-
-
-
-        ui.printInfo(big, font, Color.white);
-
-
-
-
         g.drawImage(bi, 0, 0, null);
-
 
     }
 

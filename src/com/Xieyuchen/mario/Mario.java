@@ -39,11 +39,15 @@ public class Mario extends Enery implements Runnable {
     public int moveSpeed = 16 * 2;
     public boolean speedFlag = false;
     public boolean eatMushroom = false;//
-
+    //马里奥的生命次数
+    public int liveCount = 3;
     //public boolean hitsmallBgm = false;//跳是否被顶
 
     //马里奥分数
     public int score = 0;// 金币200 powerup 1000 走路怪 100
+    //急刹
+    public boolean runLeftStop;
+    public boolean runRightStop;
 
     public int eatId;//蘑菇
     private int actionTime = 0;
@@ -63,6 +67,17 @@ public class Mario extends Enery implements Runnable {
     public void Action() {
         if (!gf.physics.isGravity) {
             if (right) {
+                if((!actionRight) && (!runRightStop)) {
+                    if (this.status == STATUS_SMALL) {
+                        this.img = new ImageIcon("src/images/mario_turn_right.png").getImage();
+
+                    } else if (this.status == STATUS_BIG) {
+                        this.img = new ImageIcon("src/images/bigmario_turn_right.png").getImage();
+                    } else if (this.status == STATUS_BIGFIRE) {
+                        this.img = new ImageIcon("src/images/bigfiremario_turn_right.png").getImage();
+                    }
+                    runRightStop = true;
+                }
                 if (this.status == STATUS_SMALL) {
                     this.img = new ImageIcon("src/images/mario_right" + actionTime / 50 % 3 + ".png").getImage();//50ms
 
@@ -74,8 +89,20 @@ public class Mario extends Enery implements Runnable {
                 actionTime += gf.flashTime;
                 actionRight = true;
                 actionLeft = false;
+                runLeftStop =false;
             }
             if (left) {
+                if((!actionLeft) && (!runLeftStop)) {
+                    if (this.status == STATUS_SMALL) {
+                        this.img = new ImageIcon("src/images/mario_turn_left.png").getImage();
+
+                    } else if (this.status == STATUS_BIG) {
+                        this.img = new ImageIcon("src/images/bigmario_turn_left.png").getImage();
+                    } else if (this.status == STATUS_BIGFIRE) {
+                        this.img = new ImageIcon("src/images/bigfiremario_turn_left.png").getImage();
+                    }
+                    runLeftStop = true;//如果总是这方向将不会急刹
+                }
                 if (this.status == STATUS_SMALL) {
                     this.img = new ImageIcon("src/images/mario_left" + actionTime / 50 % 3 + ".png").getImage();
 
@@ -87,6 +114,7 @@ public class Mario extends Enery implements Runnable {
                 actionTime += gf.flashTime;
                 actionLeft = true;
                 actionRight = false;
+                runRightStop = false;//如果按右边会有急刹动作
             }
 
             if (jumpAction) {//按键松开也是跳动作
@@ -177,7 +205,9 @@ public class Mario extends Enery implements Runnable {
     public void run() {
         while (true) {
             System.out.println("this is mario thread.");
-
+            if (left && right) {
+                continue;
+            }
             //向左走
             if (left) {
                 //碰撞到了
@@ -189,6 +219,8 @@ public class Mario extends Enery implements Runnable {
                     }
 
 
+                } else {
+                    this.x+=this.xspeed;
                 }
 
 
@@ -217,6 +249,8 @@ public class Mario extends Enery implements Runnable {
 
                     }
 
+                } else {
+                    this.x -= this.xspeed;
                 }
 
                 try {

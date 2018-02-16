@@ -199,11 +199,12 @@ public class Physics {
                     } else if (gf.mario.status == gf.mario.STATUS_BIG || gf.mario.status==gf.mario.STATUS_BIGFIRE) {
                         gf.sound.bigDestoryBrickBgm.play();
                         gf.eneryList.remove(enery);
+                        gf.mario.score+=50;
                         Graphics g= gf.getGraphics();
                         new Thread(() ->
                         {
                             BufferedImage bi = (BufferedImage) gf.createImage(gf.getSize().width, gf.getSize().height);
-                            Graphics big = gf.getGraphics();
+                            Graphics big = bi.getGraphics();
                             int high = 0;
                             int a = enery.x + 8;
                             int b = enery.y + 8;
@@ -222,6 +223,7 @@ public class Physics {
                                 }
 
                             }
+
                         }).start();
                     }
 
