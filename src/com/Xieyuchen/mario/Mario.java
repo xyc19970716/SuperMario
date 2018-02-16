@@ -160,6 +160,9 @@ public class Mario extends Enery implements Runnable {
     public void run() {
         while (true) {
             System.out.println("this is mario thread.");
+            if (right && left) {
+                continue;
+            }
             //向左走
             if (left) {
                 //碰撞到了
@@ -171,7 +174,10 @@ public class Mario extends Enery implements Runnable {
                     }
 
 
+                } else {
+                    this.x+=this.xspeed;
                 }
+
 
 
             }
@@ -198,10 +204,18 @@ public class Mario extends Enery implements Runnable {
 
                     }
 
+                } else {
+                    this.x-=this.xspeed;
                 }
 
+                try {
+                    Thread.sleep(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
 
             }
+
 
             //向上跳
             if (up) {
@@ -270,19 +284,19 @@ public class Mario extends Enery implements Runnable {
             this.y += this.yspeed;//下降
             if (gf.physics.hit(this, Dir_Down)) {
                 gf.physics.isGravity = false;
-                gf.mario.y -= 10;
+                gf.mario.y -= this.yspeed;
 
                 break;
             }
             if (gf.physics.hit(this, Dir_Left)) {
                 gf.physics.isGravity = false;
-                gf.mario.x += 10;
+                gf.mario.x += this.xspeed;
 
                 break;
             }
             if (gf.physics.hit(this, Dir_Right)) {
                 gf.physics.isGravity = false;
-                gf.mario.x -= 10;
+                gf.mario.x -= this.xspeed;
 
                 break;
             }
@@ -292,6 +306,36 @@ public class Mario extends Enery implements Runnable {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+        }
+
+        while (!gf.physics.hit(this, Dir_Down)) {
+            this.yspeed += jumpHeigh;//加速
+            this.y += this.yspeed;//下降
+            if (gf.physics.hit(this, Dir_Down)) {
+                gf.physics.isGravity = false;
+                gf.mario.y -= this.yspeed;
+
+                break;
+            }
+            if (gf.physics.hit(this, Dir_Left)) {
+                gf.physics.isGravity = false;
+                gf.mario.x += this.xspeed;
+
+                break;
+            }
+            if (gf.physics.hit(this, Dir_Right)) {
+                gf.physics.isGravity = false;
+                gf.mario.x -= this.xspeed;
+
+                break;
+            }
+
+            try {
+                Thread.sleep(2 * gf.flashTime);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
         }
         this.yspeed = (int) Length;
         if (this.status == STATUS_BIG) {

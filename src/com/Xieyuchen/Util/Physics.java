@@ -31,16 +31,16 @@ public class Physics {
             Enery enery = gf.eneryList.get(i);
             switch (dir) {
                 case "Left":
-                    rect = new Rectangle(enery.x + 2, enery.y, enery.width, enery.height);//x+2
+                    rect = new Rectangle(enery.x, enery.y, enery.width, enery.height);//x+2
                     break;
                 case "Right":
-                    rect = new Rectangle(enery.x - 1, enery.y, enery.width, enery.height);//x-1
+                    rect = new Rectangle(enery.x , enery.y, enery.width, enery.height);//x-1
                     break;
                 case "Up":
                     rect = new Rectangle(enery.x, enery.y + 1, enery.width, enery.height);//y+1
                     break;
                 case "Down":
-                    rect = new Rectangle(enery.x, enery.y - 2, enery.width, enery.height);//y-2
+                    rect = new Rectangle(enery.x, enery.y - 1, enery.width, enery.height);//y-2
                     break;
             }
             //碰撞检测
@@ -131,7 +131,7 @@ public class Physics {
                         gf.mario.status = 1;
                     }
                     try {
-                        sleep(1);
+                        sleep(5);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
