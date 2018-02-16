@@ -16,6 +16,7 @@ import static java.lang.Thread.sleep;
 public class Physics {
     private GameFrame gf;
 
+    public boolean hitCoinhasCoin;
     public Physics(GameFrame gf) {
         this.gf = gf;
 
@@ -79,13 +80,21 @@ public class Physics {
                     sprite.score += 1000;
                 }
                 if (enery.name.equals("coin") && dir.equals("Up")) {//顶到金币
+
+                    hitCoinhasCoin = true;
                     gf.sound.hitCoinBgm.play();
+                    Enery coin = new Coin(enery.x, enery.y, new ImageIcon("src/images/withoutcoin.png").getImage(), "without coin");//顶过就没了
+                    coin.Id = enery.Id;
+                    gf.eneryList.remove(enery);
+                    gf.eneryList.add(coin);
+
                     sprite.coinCount++;
                     sprite.score += 200;
                     if (sprite.coinCount == 100) {
                         sprite.coinCount = 0;
                         //加命
                     }
+
                 }
                 if ((enery.name.equals("brick") || enery.name.equals("without coin"))&& dir.equals("Up")) {
                     gf.sound.smallHitBgm.play();

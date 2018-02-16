@@ -27,6 +27,7 @@ public class GameFrame extends JFrame {
     public int flashTime = 16;
     public Mario mario;
     public Enery pipe_tou, coin, brick, floor, pipe_sheng, stepFloor, powerUpCoin;
+    public Image coinImage;//顶出的金币
     //背景图片
     public BackgroundImage bg;
     public Physics physics;
@@ -35,6 +36,7 @@ public class GameFrame extends JFrame {
     public int GAME_FRAME_WIDTH = 255;
     public int GAME_FRAME_HEIGHT = 224;
 
+    public int coinFlashtime;
     public Sound sound;
     public int movs, bgspeed = 1, headmovs;
     public int startTime;
@@ -76,10 +78,10 @@ public class GameFrame extends JFrame {
                     Enery e = eneryList.get(i);
                     if (e.name.equals("coin") || e.name.equals("powerUpCoin")) {
                         //r.delay(64);
-                        e.img = new ImageIcon("src/images/coin" + actionEneryTime / 1200 % 3 + ".png").getImage();
-                        this.ui.uiCoinImage = new ImageIcon("src/images/uicoin" + actionEneryTime / 1200 % 3 + ".png").getImage();
-                        actionEneryTime += flashTime;
+                        e.img = new ImageIcon("src/images/coin" + actionEneryTime / 800 % 3 + ".png").getImage();
+
                     }
+
                     if (e.x < -32) {
                         eneryList.remove(e);
                     }
@@ -102,7 +104,10 @@ public class GameFrame extends JFrame {
                     }
 
                 }
+                this.ui.uiCoinImage = new ImageIcon("src/images/uicoin" + actionEneryTime / 500 % 3 + ".png").getImage();
 
+
+                actionEneryTime += flashTime;
                 //检查子弹是否出界
                 checkBoom();
                 try {
@@ -196,7 +201,7 @@ public class GameFrame extends JFrame {
 
     }
 
-    private int actionEneryTime;
+    public int actionEneryTime;
 
     Robot r = new Robot();
 
@@ -225,6 +230,8 @@ public class GameFrame extends JFrame {
             Enery e = spriteList.get(i);
             big.drawImage(e.img, e.x, e.y, e.width, e.height, null);
         }
+
+
 
         //总画
         for (int i = 0; i < eneryList.size(); i++) {
