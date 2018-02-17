@@ -263,10 +263,12 @@ public class Physics {
                     }
 
                     if (gf.mario.y > 224) {
-                        Dead dead = new Dead(this.gf);
+                        //Dead dead = new Dead(gf);
                         //new Thread(mario).stop();
-                        dead.showDead(gf.mario.x, gf.mario.y);
-                        gf.mario.status = 1;
+                        //dead.showDead(gf.mario.x, gf.mario.y);
+                        //gf.mario.status = 1;
+                        //gf.mario.liveCount-=1;
+                        //gf.ui.showLiveUI=true;
                     }
                     try {
                         sleep(5);

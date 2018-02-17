@@ -22,6 +22,7 @@ public class UI extends JFrame{
     public boolean showLiveUI;
     public int showLiveUIflash;
     public int getShowLiveUItime;
+    public int topScore;
     public UI(GameFrame gf) {
         this.gf = gf;
 
@@ -98,11 +99,29 @@ public class UI extends JFrame{
             g.setColor(c);
             g.drawString("1 PLAYER GAME",16 * 2 + 16 * 2 + 8 * 2+8,24+8 + 8+16+2+titleImage.getHeight(null));
             g.drawString("2 QUIT GAME",16 * 2 + 16 * 2 + 8 * 2+8,24+8 + 8+16+8+8+titleImage.getHeight(null));
+            g.drawString("TOP-",16 * 2 + 16 * 2 + 8 * 2+8,24+8 + 8+16+8+8+16+titleImage.getHeight(null));
+            if (topScore< gf.mario.score) {
+                topScore = gf.mario.score;
+            }
+            if (topScore < 10) {
+                g.drawString("00000" + String.valueOf(topScore), 16 * 2 + 16 * 2 + 8 * 2+8+16+16, 24+8 + 8+16+8+8+16+titleImage.getHeight(null));
+            } else if (topScore < 100) {
+                g.drawString("0000" + String.valueOf(topScore), 16 * 2 + 16 * 2 + 8 * 2+8+16+16, 24+8 + 8+16+8+8+16+titleImage.getHeight(null));
+            } else if (topScore < 1000) {
+                g.drawString("000" + String.valueOf(topScore), 16 * 2 + 16 * 2 + 8 * 2+8+16+16, 24+8 + 8+16+8+8+16+titleImage.getHeight(null));
+            } else if (topScore < 10000) {
+                g.drawString("00" + String.valueOf(topScore), 16 * 2 + 16 * 2 + 8 * 2+8+16+16, 24+8 + 8+16+8+8+16+titleImage.getHeight(null));
+            } else if (topScore < 100000) {
+                g.drawString("0" + String.valueOf(topScore), 16 * 2 + 16 * 2 + 8 * 2+8+16+16, 24+8 + 8+16+8+8+16+titleImage.getHeight(null));
+            } else {
+                g.drawString(String.valueOf(topScore), 16 * 2 + 16 * 2 + 8 * 2+8+16+16, 24+8 + 8+16+8+8+16+titleImage.getHeight(null));
+            }
             if (Play) {
                 g.drawImage(optionImage,16*2+16*2+8 ,24+8+2+16+titleImage.getHeight(null),8,8,null);
             } else if (Quit) {
                 g.drawImage(optionImage,16*2+16*2+8 ,24+8+16+16+titleImage.getHeight(null),8,8,null);
             }
+
         } else if (showLiveUI) {//按下回车秀一波生命
             g.drawString("WORLD 1-1",16 * 2 + 16 * 2 + 8 * 2+8,80);
             g.drawImage(gf.mario.img,16 * 2 + 16 * 2 + 8 * 2+8+8,80+24,gf.mario.width,gf.mario.height,null);
